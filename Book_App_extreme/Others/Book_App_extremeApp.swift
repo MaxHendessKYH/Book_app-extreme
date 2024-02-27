@@ -6,12 +6,22 @@
 //
 
 import SwiftUI
+import FirebaseCore
+
+
 
 @main
 struct Book_App_extremeApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  // register app delegate for Firebase setup
+//  @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+
+  var body: some Scene {
+    WindowGroup {
+      NavigationView {
+        MainView()
+      }
     }
+  }
 }
+
+
