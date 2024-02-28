@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct MainView: View {
-    @ObservedObject var  bookListVM = BookListViewViewModel()
+    @ObservedObject var  librarian = BookViewViewModel()
     var body: some View {
         VStack {
             Button("Test API"){
-            bookListVM.getBooks{ books in
+            librarian.getBooks{ books in
                 for book in books {
                     print(book.volumeInfo.title)
                 }
