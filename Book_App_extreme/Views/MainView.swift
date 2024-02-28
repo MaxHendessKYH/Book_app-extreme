@@ -12,10 +12,14 @@ struct MainView: View {
     var body: some View {
         VStack {
             Button("Test API"){
-                bookListVM.getBooks()
+            bookListVM.getBooks{ books in
+                for book in books {
+                    print(book.volumeInfo.title)
+                }
             }
+            }
+            .padding()
         }
-        .padding()
     }
 }
 
