@@ -23,7 +23,7 @@ struct LoginView: View {
                         .textFieldStyle(DefaultTextFieldStyle())
                     
                     ZStack {
-                            Color.blue // Background color
+                            Color.blue
                             .frame(maxWidth: .infinity, maxHeight: 40)
                             
                             Button(action: {
@@ -32,7 +32,7 @@ struct LoginView: View {
                                 Text("Log In")
                                     .foregroundColor(.white)
                                     .bold()
-                                    .padding() // Add padding around the button text
+                                    .padding()
                             })
                         
                         }
@@ -51,33 +51,7 @@ struct LoginView: View {
                 .padding(.bottom, 50)
                 Spacer()
                 
-                // Login Form
-//                Form{
-//
-//                        
-//                    TextField("Email Adress", text: $viewModel.email)
-//                        .textFieldStyle(DefaultTextFieldStyle())
-//                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
-//                    
-//                    SecureField("Password", text: $viewModel.password)
-//                        .textFieldStyle(DefaultTextFieldStyle())
-//                    
-//                    Button(title: "Log In", background: .blue){
-//                        // Attempt Log in
-//                        viewModel.login()
-//                    }
-//                    .padding()
-//                }
-//                .offset(y: -50)
-//                
-//                // Create Acount
-//                VStack{
-//                    Text("New around here?")
-//                        // Show Registeration
-//                    NavigationLink("Create An Account!", destination: RegisterView())
-//                }
-//                .padding(.bottom, 50)
-//                Spacer()
+                
             }
         }
     }
