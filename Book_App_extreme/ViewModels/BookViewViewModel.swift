@@ -11,9 +11,13 @@ class BookViewViewModel: ObservableObject{
     @Published var books = [BookItem]()
     // todo add searchterm instead of hardcoded value, inparameter and in apiURL (after volumes?q=)
     func getBooks( compleation: @escaping ([BookItem])-> Void){
-        // Call api serching for harry potter books
+        // Call api with searchword. Looking for harry potter books
         let apiURL = URL(string:"https://www.googleapis.com/books/v1/volumes?q=harry+potter")!
-        // &key=AIzaSyC5sFbmsGJTzPu-F0Wkr7qcDnU_hz_VpcY
+        // Here are the apis endpoints ( not implemented )
+        //GET Specific info about a volume https://www.googleapis.com/books/v1/volumes/volumeID?
+        //Get bookshelves https://www.googleapis.com/books/v1/myLibrary/bookshelves
+        // Get MyLibrary https://www.googleapis.com/books/v1/myLibrary/bookshelves/bookshelfID?
+        //api key, think its useless &key=AIzaSyC5sFbmsGJTzPu-F0Wkr7qcDnU_hz_VpcY
         
         let session = URLSession.shared
         
@@ -29,17 +33,14 @@ class BookViewViewModel: ObservableObject{
                     return
                 }
              
-            // check status code ( you want 200 )
+            // check status code (you get 200 on a succesfull call )
                 guard let httpRespons = response as? HTTPURLResponse else {
                     print("Error: no HTTPURL Response")
                     return
                 }
                 print("Your call got this Status Code:\(httpRespons.statusCode)")
             
-            
-                //  print("Data: \(String(data: jsonData , encoding: .utf8))" ?? "Decoding error")
-                // Successfull api call start teh decoding process
-               
+                // Successfull api call start decoding process
                     do{
                         let decodedData = try JSONDecoder().decode(Book.self, from: jsonData)
                         DispatchQueue.main.async {
@@ -50,7 +51,6 @@ class BookViewViewModel: ObservableObject{
                     }catch{
                         print("Error decoding JSON \(error)")
                     }
-                
         }
         
         task.resume()
