@@ -8,10 +8,60 @@
 import SwiftUI
 
 struct BookListView: View {
+    
+    
+    @ObservedObject var bookViewModel: BookListViewViewModel = BookListViewViewModel()
+    
+    
+    
+    @State var bookList: [Books] = [Books(titel: "Harry Potter", author: "me"),
+                                    
+                                    Books(titel: "BAliBAli", author: "it is me"),
+                                    
+                                    Books(titel: "AliAliAli", author: "Ali Alhasan"),
+                                    
+                                    Books(titel: "AAAA", author: "me too")]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack{
+            
+            LinearGradient(colors: [Color.purple , Color.red], startPoint: .topLeading, endPoint: .bottom)
+                .ignoresSafeArea()
+            VStack{
+               
+                // kan ändras till var senare om det behövs vid bookViewn 
+                let sortedList = bookViewModel.sortList(unSortedList: bookList)
+                
+                List(sortedList,id: \.id){ book in
+                        
+                        HStack{
+                            Image(systemName: "trash")
+                                .padding(.trailing, 20)
+                            /*
+                             AsyncImage(url: URL(string: viewModel.imageUrl))
+                             */
+                            
+                            VStack{
+                                Text(book.titel)
+                                    .padding(5)
+                                Text(book.author)
+                                    .padding(5)
+                            }
+                        }
+                        
+                    }.scrollContentBackground(.hidden)
+                
+            }
+            
+            
+                
+             
+            
+        }
     }
 }
+
+
 
 #Preview {
     BookListView()

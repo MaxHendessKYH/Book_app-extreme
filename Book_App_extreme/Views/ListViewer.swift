@@ -8,11 +8,47 @@
 import SwiftUI
 
 struct ListViewer: View {
+    @State var bookList: [Books] = [Books(titel: "Harry Potter", author: "me", id: UUID(), imgUrl: URL(string: "mmm")!)]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack{
+            
+            LinearGradient(colors: [Color.purple , Color.red], startPoint: .topLeading, endPoint: .bottom)
+                .ignoresSafeArea()
+            VStack{
+               
+                
+                
+                List(bookList,id: \.id){ book in
+                    
+                    HStack{
+                        Image(systemName: "trash")
+                            .padding(.trailing, 20)
+                        /*
+                         AsyncImage(url: URL(string: viewModel.imageUrl))
+                         */
+                        
+                        VStack{
+                            Text(book.titel)
+                                .padding(5)
+                            Text(book.author)
+                                .padding(5)
+                        }
+                    }
+                    
+                }.scrollContentBackground(.hidden)
+                
+            }
+            
+            
+                
+             
+            
+        }
     }
 }
 
 #Preview {
     ListViewer()
 }
+
