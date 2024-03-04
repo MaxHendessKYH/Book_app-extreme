@@ -33,7 +33,7 @@ struct LoginView: View {
                             .frame(maxWidth: .infinity, maxHeight: 40)
                             
                             Button(action: {
-                                // Action
+                                viewModel.login()
                             }, label: {
                                 Text("Log In")
                                     .foregroundColor(.white)

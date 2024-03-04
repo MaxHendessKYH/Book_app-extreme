@@ -18,7 +18,7 @@ struct Book_App_extremeApp: App {
   var body: some Scene {
     WindowGroup {
       NavigationView {
-        MainView()
+        LoginView()
       }
     }
   }
