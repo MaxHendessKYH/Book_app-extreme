@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65144B882B8F5CF300A4DC8B /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65144B872B8F5CF300A4DC8B /* SearchBarView.swift */; };
+		652DC6962B95AD4500C5E9A1 /* PopUpMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652DC6952B95AD4500C5E9A1 /* PopUpMessageView.swift */; };
 		F11761352B8F6BDA007E5ABC /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11761342B8F6BDA007E5ABC /* LoginView.swift */; };
 		F11761372B8F6BF5007E5ABC /* LoginViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11761362B8F6BF5007E5ABC /* LoginViewViewModel.swift */; };
 		F11761392B8F6DF9007E5ABC /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F11761382B8F6DF9007E5ABC /* FirebaseAnalytics */; };
@@ -46,6 +48,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		65144B872B8F5CF300A4DC8B /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
+		652DC6952B95AD4500C5E9A1 /* PopUpMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpMessageView.swift; sourceTree = "<group>"; };
 		F11761342B8F6BDA007E5ABC /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		F11761362B8F6BF5007E5ABC /* LoginViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewViewModel.swift; sourceTree = "<group>"; };
 		F1B592652B8DD3950081685D /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
@@ -111,7 +115,11 @@
 				F1B592672B8DD3A90081685D /* ProfileView.swift */,
 				F1B592692B8DD3C20081685D /* BookListView.swift */,
 				F1B5926B2B8DD3F00081685D /* NewBookItemView.swift */,
+
+				65144B872B8F5CF300A4DC8B /* SearchBarView.swift */,
+				652DC6952B95AD4500C5E9A1 /* PopUpMessageView.swift */,
 				F11761342B8F6BDA007E5ABC /* LoginView.swift */,
+
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -273,6 +281,8 @@
 			files = (
 				F1B592742B8DD47A0081685D /* BookListViewViewModel.swift in Sources */,
 				F1B592682B8DD3A90081685D /* ProfileView.swift in Sources */,
+				65144B882B8F5CF300A4DC8B /* SearchBarView.swift in Sources */,
+				652DC6962B95AD4500C5E9A1 /* PopUpMessageView.swift in Sources */,
 				F1B592662B8DD3950081685D /* RegisterView.swift in Sources */,
 				F1B592702B8DD4460081685D /* RegisterViewViewModel.swift in Sources */,
 				F1B592762B8DD4930081685D /* NewBookItemViewViewModel.swift in Sources */,
