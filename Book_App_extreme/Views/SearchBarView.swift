@@ -12,7 +12,7 @@ struct SearchBarView: View {
     @State private var searchText = ""
     @State private var currentIndex = 0
     
-    let searchFilters = ["ISBN", "Titel", "Författare", "Genre"]
+    let searchFilters = ["ISBN", "Title", "Authors", "Genre"]
     
     var body: some View {
         VStack {
@@ -30,7 +30,7 @@ struct SearchBarView: View {
             .cornerRadius(10)
             
             HStack {
-                TextField("Sök...", text: $searchText)
+                TextField("Search", text: $searchText)
                     .padding()
                     .foregroundStyle(.black)
                     .font(.title2)
@@ -59,7 +59,7 @@ struct SearchBarView: View {
                 }
             }
             
-            Text("Kategori: \(searchFilters[currentIndex].uppercased())")
+            Text("Category: \(searchFilters[currentIndex].uppercased())")
                 .bold()
                 .font(.title2)
                 .foregroundStyle(.brown)
@@ -69,7 +69,7 @@ struct SearchBarView: View {
             // Visa resultaten i en lista.
             
             
-            Text("Resultat")
+            Text("Result")
                 .padding()
             
             Spacer()
