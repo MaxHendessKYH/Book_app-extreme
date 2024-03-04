@@ -10,7 +10,7 @@ import Foundation
 class BookListViewViewModel: ObservableObject{
     
     
-  @Published  var lists: [(String, [Books])] = [("test", []), ("Test2", [Books(titel: "Mybook", author: "Ali Alhasan")] )]
+  @Published  var bokHyllor : [(String, [Books])] = [("test", []), ("Test2", [Books(titel: "Mybook", author: "Ali Alhasan")] )]
     
      
     var listOfBooks = [Books(titel: "Ali", author: "husien"),
@@ -23,20 +23,20 @@ class BookListViewViewModel: ObservableObject{
 
     func addList(listTitel: String){
         
-        lists.append((listTitel, []))
+        bokHyllor.append((listTitel, []))
     }
     
     func removeList(listTitel: String){
         
         
-        print(lists)
+        print(bokHyllor)
         
-        for i in 0 ... lists.count - 1{
+        for i in 0 ... bokHyllor.count - 1{
             
-            if lists[i].0  == listTitel {
+            if bokHyllor[i].0  == listTitel {
                
-                lists.remove(at: i)
-                print(lists)
+                bokHyllor.remove(at: i)
+                print(bokHyllor)
            }
                 
         }
@@ -49,9 +49,8 @@ class BookListViewViewModel: ObservableObject{
     
     func uppdateList(listToBeUppdated: [Books]){
         
-        //sortList(unSortedList: listToBeUppdated)
         
-        
+        //Implementeras efter vi fixar med databasen då uppdateras databasen med den nya listan
     }
     
     func sortList(unSortedList: [Books]) -> [Books]{
