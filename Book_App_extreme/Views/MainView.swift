@@ -8,14 +8,37 @@
 import SwiftUI
 
 struct MainView: View {
+    @ObservedObject var  librarian = BookViewViewModel()
+    @State var apiBooks = [BookItem]()
+    @State var myBookshelf = [BookItem]()
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Button("Test API"){
+                // Get books from api
+                librarian.getBooks{ books in
+                    for book in books {
+                        apiBooks.append(book)
+                    }
+                }
+            }
+            List{
+                // show books from api
+                ForEach(apiBooks, id: \.id){book in
+                    NavigationLink{
+                        NewBookItemView()
+                    } label: {
+                        Text(book.volumeInfo.title ?? " no name ")
+                    }
+                    
+                    Button("Add to Bookshelf"){
+                        //Add book to bookshelf todo: save in database
+                        myBookshelf.append(book)
+                        print(myBookshelf)
+                    }
+                }
+                .padding()
+            }
         }
-        .padding()
     }
 }
 
