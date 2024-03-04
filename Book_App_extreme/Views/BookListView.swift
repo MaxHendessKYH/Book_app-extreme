@@ -54,7 +54,7 @@ struct BookListView: View {
                 
                 Button("TestPrint"){
                     
-                    
+                    tempFunc()
                 }
                 
             }
@@ -66,7 +66,7 @@ struct BookListView: View {
         }
     }
     func tempFunc(){
-        bookViewModel.removeList(listTitel: "eee")
+        bookViewModel.removeList(listTitel: "test")
     }
 }
 

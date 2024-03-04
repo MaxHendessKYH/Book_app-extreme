@@ -10,7 +10,7 @@ import Foundation
 class BookListViewViewModel: ObservableObject{
     
     
-    var lists: [(String, [Books])] = [("test", []), ("Test2", [Books(titel: "Mybook", author: "Ali Alhasan")] )]
+  @Published  var lists: [(String, [Books])] = [("test", []), ("Test2", [Books(titel: "Mybook", author: "Ali Alhasan")] )]
     
      
     var listOfBooks = [Books(titel: "Ali", author: "husien"),
@@ -28,20 +28,28 @@ class BookListViewViewModel: ObservableObject{
     
     func removeList(listTitel: String){
         
-        //lists.remove complete !!!
         
-       /* for i in lists{
+        print(lists)
+        
+        for i in 0 ... lists.count - 1{
             
-            if lists[i] == listTitel
+            if lists[i].0  == listTitel {
+               
+                lists.remove(at: i)
+                print(lists)
+           }
                 
-        }*/
+        }
         
-        // I was going to test some methods and print list items
+    
+        
+        
+        
     }
     
     func uppdateList(listToBeUppdated: [Books]){
         
-        sortList(unSortedList: listToBeUppdated)
+        //sortList(unSortedList: listToBeUppdated)
         
         
     }
