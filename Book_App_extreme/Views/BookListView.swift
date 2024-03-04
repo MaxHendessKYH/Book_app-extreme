@@ -51,6 +51,12 @@ struct BookListView: View {
                         
                     }.scrollContentBackground(.hidden)
                 
+                
+                Button("TestPrint"){
+                    
+                    
+                }
+                
             }
             
             
@@ -58,6 +64,9 @@ struct BookListView: View {
              
             
         }
+    }
+    func tempFunc(){
+        bookViewModel.removeList(listTitel: "eee")
     }
 }
 
