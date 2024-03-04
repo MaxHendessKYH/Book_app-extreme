@@ -13,12 +13,13 @@ class BookListViewViewModel: ObservableObject{
   @Published  var bokHyllor : [(String, [Books])] = [("test", []), ("Test2", [Books(titel: "Mybook", author: "Ali Alhasan")] )]
     
      
+    // Behövs inte, bara för testning
     var listOfBooks = [Books(titel: "Ali", author: "husien"),
                        Books(titel: "tli", author: "husien"),
                        Books(titel: "AAAli", author: "husien"),
                        Books(titel: "CCCli", author: "husien"),
                        Books(titel: "BBBli", author: "husien"),]
-    
+  
     
 
     func addList(listTitel: String){
@@ -29,21 +30,8 @@ class BookListViewViewModel: ObservableObject{
     func removeList(listTitel: String){
         
         
-        print(bokHyllor)
-        
-        for i in 0 ... bokHyllor.count - 1{
+        bokHyllor = bokHyllor.filter { $0.0 != listTitel }
             
-            if bokHyllor[i].0  == listTitel {
-               
-                bokHyllor.remove(at: i)
-                print(bokHyllor)
-           }
-                
-        }
-        
-    
-        
-        
         
     }
     

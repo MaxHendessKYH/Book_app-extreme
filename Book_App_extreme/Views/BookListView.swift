@@ -52,10 +52,7 @@ struct BookListView: View {
                     }.scrollContentBackground(.hidden)
                 
                 
-                Button("TestPrint"){
-                    
-                    tempFunc()
-                }
+               
                 
             }
             
@@ -65,9 +62,7 @@ struct BookListView: View {
             
         }
     }
-    func tempFunc(){
-        bookViewModel.removeList(listTitel: "test")
-    }
+   
 }
 
 
