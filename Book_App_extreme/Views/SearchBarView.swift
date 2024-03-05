@@ -9,8 +9,10 @@ import SwiftUI
 
 struct SearchBarView: View {
     
-    @State private var searchText = ""
+    @Binding var searchText: String
     @State private var currentIndex = 0
+    
+    var onSearchClosure: () -> Void
     
     let searchFilters = ["ISBN", "Title", "Authors", "Genre"]
     
@@ -38,6 +40,7 @@ struct SearchBarView: View {
                     .textFieldStyle(.roundedBorder)
                     .cornerRadius(10)
                     .onChange(of: searchText, initial: false, { oldValue, newValue in
+                        //let text = searchedText(text: newValue)
                         // API-anrop..
                         // Baserat på nuvarande index i filtret så
                         // vill vi hämta från specifik key.
@@ -46,7 +49,7 @@ struct SearchBarView: View {
                 })
                 
                 Button(action: {
-                    // Behövs knapp?
+                    onSearchClosure()
                     
                 }) {
                     Image(systemName: "magnifyingglass")
@@ -64,20 +67,7 @@ struct SearchBarView: View {
                 .font(.title2)
                 .foregroundStyle(.brown)
                 .opacity(0.6)
-            
-            
-            // Visa resultaten i en lista.
-            
-            
-            Text("Result")
-                .padding()
-            
-            Spacer()
         }
         .padding()
     }
-}
-
-#Preview {
-    SearchBarView()
 }
