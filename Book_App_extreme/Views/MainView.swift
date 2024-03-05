@@ -25,11 +25,11 @@ struct MainView: View {
             List{
                 // show books from api
                 ForEach(apiBooks, id: \.id){book in
-                    NavigationLink{
-                        NewBookItemView()
-                    } label: {
+                    NavigationLink(
+                        destination: BookItemView(bookItem: book),
+                    label: {
                         Text(book.volumeInfo.title ?? " no name ")
-                    }
+                    })
                     
                     Button("Add to Bookshelf"){
                         //Add book to bookshelf todo: save in database
@@ -44,5 +44,7 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView()
+    NavigationView {
+        MainView()
+    }
 }
