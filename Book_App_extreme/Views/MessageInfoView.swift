@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PopUpMessageView: View {
+struct MessageInfoView: View {
    var systemImageText: String
    var color: Color
    var message: String
@@ -33,5 +33,5 @@ struct PopUpMessageView: View {
 }
 
 #Preview {
-    PopUpMessageView(systemImageText: "person", color: Color.blue, message: "Test")
+    MessageInfoView(systemImageText: "person", color: Color.blue, message: "Test")
 }

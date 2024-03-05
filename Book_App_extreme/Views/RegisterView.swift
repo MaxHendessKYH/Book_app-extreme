@@ -106,9 +106,9 @@ struct RegisterView: View {
     
     private func buildMessage() -> some View {
          if showMessage {
-             PopUpMessageView(systemImageText: "person.fill.checkmark", color: Color.green, message: "User registered")
+             MessageInfoView(systemImageText: "person.fill.checkmark", color: Color.green, message: "User registered")
          } else {
-             PopUpMessageView(systemImageText: "person.fill.xmark", color: Color.red, message: "Fill out the form correctly...")
+             MessageInfoView(systemImageText: "person.fill.xmark", color: Color.red, message: "Fill out the form correctly...")
          }
      }
     private func checkMailFormat(mail: String) -> Bool {
