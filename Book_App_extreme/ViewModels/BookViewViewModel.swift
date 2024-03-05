@@ -9,10 +9,15 @@ import Foundation
 class BookViewViewModel: ObservableObject{
     
     @Published var books = [BookItem]()
+    
+    @Published var searchText: String = ""
+    @Published var categoryIndex: Int = 0
+    let baseUrl = "https://www.googleapis.com/books/v1/volumes?q="
+    
     // todo add searchterm instead of hardcoded value, inparameter and in apiURL (after volumes?q=)
     func getBooks( compleation: @escaping ([BookItem])-> Void){
         // Call api with searchword. Looking for harry potter books
-        let apiURL = URL(string:"https://www.googleapis.com/books/v1/volumes?q=harry+potter")!
+        let apiURL = URL(string:combinedUrl())!
         // Here are the apis endpoints ( not implemented )
         //GET Specific info about a volume https://www.googleapis.com/books/v1/volumes/volumeID?
         //Get bookshelves https://www.googleapis.com/books/v1/myLibrary/bookshelves
@@ -54,5 +59,23 @@ class BookViewViewModel: ObservableObject{
         }
         
         task.resume()
+    }
+    
+    func combinedUrl() -> String {
+        let newUrl = "\(baseUrl)\(getCategoryString())\(searchText)"
+        return newUrl
+    }
+    
+    func getCategoryString() -> String {
+        switch categoryIndex {
+            case 0:
+                return "intitle:"
+            case 1:
+                return "isbn:"
+            case 2:
+                return "inauthor:"
+        default:
+            return ""
+        }
     }
 }

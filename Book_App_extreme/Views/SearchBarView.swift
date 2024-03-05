@@ -9,10 +9,11 @@ import SwiftUI
 
 struct SearchBarView: View {
     
-    @State private var searchText = ""
-    @State private var currentIndex = 0
+    @Binding var searchText: String
+    @Binding var currentIndex: Int
     
-    let searchFilters = ["ISBN", "Title", "Authors", "Genre"]
+    var onSearchClosure: () -> Void
+    let searchFilters = ["Title", "ISBN", "Authors"]
     
     var body: some View {
         VStack {
@@ -38,15 +39,11 @@ struct SearchBarView: View {
                     .textFieldStyle(.roundedBorder)
                     .cornerRadius(10)
                     .onChange(of: searchText, initial: false, { oldValue, newValue in
-                        // API-anrop..
-                        // Baserat på nuvarande index i filtret så
-                        // vill vi hämta från specifik key.
-                        
-                        //print("Söker.. \(newValue) med filter \(searchFilters[currentIndex])")
+                        //Någon användning?
                 })
                 
                 Button(action: {
-                    // Behövs knapp?
+                    onSearchClosure()
                     
                 }) {
                     Image(systemName: "magnifyingglass")
@@ -64,20 +61,7 @@ struct SearchBarView: View {
                 .font(.title2)
                 .foregroundStyle(.brown)
                 .opacity(0.6)
-            
-            
-            // Visa resultaten i en lista.
-            
-            
-            Text("Result")
-                .padding()
-            
-            Spacer()
         }
         .padding()
     }
-}
-
-#Preview {
-    SearchBarView()
 }
