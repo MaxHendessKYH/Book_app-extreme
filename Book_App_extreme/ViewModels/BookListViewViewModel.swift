@@ -4,9 +4,8 @@
 //
 //  Created by Mehdi on 2024-02-27.
 //
-
+import SwiftUI
 import Foundation
-
 class BookListViewViewModel: ObservableObject{
     
     
@@ -19,9 +18,7 @@ class BookListViewViewModel: ObservableObject{
                        Books(titel: "AAAli", author: "husien"),
                        Books(titel: "CCCli", author: "husien"),
                        Books(titel: "BBBli", author: "husien"),]
-  
-    
-
+ 
     func addList(listTitel: String){
         
         bokHyllor.append((listTitel, []))
@@ -53,4 +50,4 @@ class BookListViewViewModel: ObservableObject{
         
         return sortedList
     }
-}
+  }
