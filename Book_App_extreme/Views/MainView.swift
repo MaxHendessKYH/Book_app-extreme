@@ -13,6 +13,7 @@ struct MainView: View {
     @State var myBookshelf = [BookItem]()
     var body: some View {
         VStack {
+            Text("Welcome to the Library")
             Button("Test API"){
                 // Get books from api
                 librarian.getBooks{ books in
