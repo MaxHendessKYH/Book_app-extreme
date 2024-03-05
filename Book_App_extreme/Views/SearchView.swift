@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  SearchView.swift
 //  Book_App_extreme
 //
 //  Created by Max.Hendess on 2024-02-26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MainView: View {
+struct SearchView: View {
     @ObservedObject var  librarian = BookViewViewModel()
     @State var apiBooks = [BookItem]()
     @State var myBookshelf = [BookItem]()
@@ -52,6 +52,6 @@ struct MainView: View {
 
 #Preview {
     NavigationView {
-        MainView()
+        SearchView()
     }
 }
