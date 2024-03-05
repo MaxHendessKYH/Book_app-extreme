@@ -20,17 +20,18 @@ struct MainView: View {
             SearchBarView(searchText: $librarian.searchText, currentIndex: $librarian.categoryIndex, onSearchClosure: {
                 apiBooks.removeAll()
 //                // Get books from api
+            Text("Welcome to the Library")
+                // Get books from api
                 librarian.getBooks{ books in
                     for book in books {
                         apiBooks.append(book)
                     }
-                }
             })
             List{
                 // show books from api
                 ForEach(apiBooks, id: \.id){book in
                     NavigationLink{
-                        NewBookItemView()
+                        BookItemView()
                     } label: {
                         Text(book.volumeInfo.title)
                     }
@@ -48,5 +49,7 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView()
+    NavigationView {
+        MainView()
+    }
 }
