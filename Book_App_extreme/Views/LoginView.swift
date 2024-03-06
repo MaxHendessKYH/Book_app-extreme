@@ -43,6 +43,7 @@ struct LoginView: View {
                         
                         }
                         .cornerRadius(15)
+                    
                 }
                 .offset(y: 150)
                 
