@@ -20,12 +20,11 @@ struct ProfileView: View {
         ScrollView {
             VStack {
                 Text("Your Profile")
-                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                    .font(.largeTitle)
                     .bold()
                     Circle()
                         .frame(width: 100, height: 100, alignment: .top)
                         .foregroundStyle(.brown)
-                        .padding()
                         .overlay(
                             Button(action: {
                                 // Sätt en avatar eller liknande?
@@ -39,28 +38,30 @@ struct ProfileView: View {
                             }
                         )
                     
-                    Spacer()
                     
                     VStack {
-                        Text("Name: \t Test")
+                        Text("Welcome,  Jorgen!")
                             .bold()
+                            .font(.title2)
+                            .padding()
                         Text("Mail: \t\(viewModel.getUserMail())")
                             .bold()
+                            .font(.title3)
                         Text("User since: \t \(viewModel.getUserRegistrationDate())")
                             .bold()
+                            .font(.title3)
                         
                     }
                     .padding(20)
                 
                 Spacer()
                 
-                Text("Short presentation")
+                Text("About Jorgen")
                     .bold()
                 
                 TextEditor(text: $presentationText)
                              .padding(80)
                              .border(.black, width: 1)
-                             .cornerRadius(5)
                      }
             .padding(20)
                         Button(action: {
