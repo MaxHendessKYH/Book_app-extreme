@@ -9,7 +9,6 @@ import SwiftUI
 
 struct BookItemView: View {
     @State var bookItem: BookItem
-    
     var body: some View {
         NavigationView {
             VStack {
@@ -17,7 +16,7 @@ struct BookItemView: View {
                     Rectangle()
                         .frame(height: 300)
                         .background(.ultraThinMaterial)
-                    Image(systemName: "book")
+                   RemoteImageView(imageUrl: convertBookUrltoString())
                 }
                 Text(bookItem.volumeInfo.title)
                     .font(.title)
@@ -33,6 +32,18 @@ struct BookItemView: View {
             }
             //.containerRelativeFrame([.horizontal, .vertical])
             //.background(Gradient(colors: [.teal,. cyan, .green]).opacity(0.6))
+        }
+    }
+    func convertBookUrltoString() -> String{
+        let bookURL:URL? =  bookItem.volumeInfo.imageLinks?.smallThumbnail
+       if let url = bookURL
+        {
+           // make url into string
+           let result:String = url.absoluteString
+           return result
+       }
+        else{
+            return ""
         }
     }
 }
