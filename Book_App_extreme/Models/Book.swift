@@ -2,10 +2,7 @@
 //  Book.swift
 //  Book_App_extreme
 //
-//  Created by Max.Hendess on 2024-02-28.
+//  Created by Ali Alhasan on 2024-03-06.
 //
 
 import Foundation
-struct Book : Codable{
-    var items: [BookItem]
-}
