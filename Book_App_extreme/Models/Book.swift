@@ -6,3 +6,6 @@
 //
 
 import Foundation
+struct Book : Codable{
+    var items: [BookItem]
+}
