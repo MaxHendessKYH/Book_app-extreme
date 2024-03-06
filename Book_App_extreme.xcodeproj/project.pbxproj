@@ -63,6 +63,8 @@
 		F1EDC1CF2B96A2BB00FE0313 /* Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EDC1CE2B96A2BB00FE0313 /* Extentions.swift */; };
 		F1EDC1D32B986C4400FE0313 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EDC1D22B986C4400FE0313 /* MainView.swift */; };
 		F1EDC1D52B986C6200FE0313 /* MainViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EDC1D42B986C6200FE0313 /* MainViewViewModel.swift */; };
+		F1EDC1D72B98B27100FE0313 /* RemoteImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EDC1D62B98B27100FE0313 /* RemoteImageView.swift */; };
+		F1EDC1D92B98B29000FE0313 /* ImageLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EDC1D82B98B29000FE0313 /* ImageLinks.swift */; };
 		F225FF5E2B8CC41200414F98 /* Book_App_extremeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F225FF5D2B8CC41200414F98 /* Book_App_extremeApp.swift */; };
 		F225FF602B8CC41200414F98 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F225FF5F2B8CC41200414F98 /* SearchView.swift */; };
 		F225FF622B8CC41400414F98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F225FF612B8CC41400414F98 /* Assets.xcassets */; };
@@ -94,6 +96,8 @@
 		F1EDC1CE2B96A2BB00FE0313 /* Extentions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extentions.swift; sourceTree = "<group>"; };
 		F1EDC1D22B986C4400FE0313 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		F1EDC1D42B986C6200FE0313 /* MainViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewViewModel.swift; sourceTree = "<group>"; };
+		F1EDC1D62B98B27100FE0313 /* RemoteImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteImageView.swift; sourceTree = "<group>"; };
+		F1EDC1D82B98B29000FE0313 /* ImageLinks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLinks.swift; sourceTree = "<group>"; };
 		F225FF5A2B8CC41200414F98 /* Book_App_extreme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Book_App_extreme.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F225FF5D2B8CC41200414F98 /* Book_App_extremeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book_App_extremeApp.swift; sourceTree = "<group>"; };
 		F225FF5F2B8CC41200414F98 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -150,6 +154,7 @@
 		F1B592612B8DD3300081685D /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F1EDC1D82B98B29000FE0313 /* ImageLinks.swift */,
 				652DC6BB2B96029B00C5E9A1 /* VolumeInfo.swift */,
 				652DC6B92B96026B00C5E9A1 /* Book.swift */,
 				652DC6B72B9601B000C5E9A1 /* BookItem.swift */,
@@ -163,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				340FEDDC2B97632A00280677 /* HomeView.swift */,
+				F1EDC1D62B98B27100FE0313 /* RemoteImageView.swift */,
 				F1EDC1D22B986C4400FE0313 /* MainView.swift */,
 				F225FF5F2B8CC41200414F98 /* SearchView.swift */,
 				F1B592672B8DD3A90081685D /* ProfileView.swift */,
@@ -359,6 +365,7 @@
 				F1B592662B8DD3950081685D /* RegisterView.swift in Sources */,
 				F1EDC1D32B986C4400FE0313 /* MainView.swift in Sources */,
 				F1B592702B8DD4460081685D /* RegisterViewViewModel.swift in Sources */,
+				F1EDC1D72B98B27100FE0313 /* RemoteImageView.swift in Sources */,
 				F1EDC1AB2B96811400FE0313 /* User.swift in Sources */,
 				F1B5926A2B8DD3C20081685D /* BookListView.swift in Sources */,
 				F11761372B8F6BF5007E5ABC /* LoginViewViewModel.swift in Sources */,
@@ -369,6 +376,7 @@
 				F225FF602B8CC41200414F98 /* SearchView.swift in Sources */,
 				652DC6BA2B96026B00C5E9A1 /* Book.swift in Sources */,
 				F1B5926E2B8DD4180081685D /* SearchViewViewModel.swift in Sources */,
+				F1EDC1D92B98B29000FE0313 /* ImageLinks.swift in Sources */,
 				F1B592722B8DD4530081685D /* ProfileViewViewModel.swift in Sources */,
 				F225FF5E2B8CC41200414F98 /* Book_App_extremeApp.swift in Sources */,
 				F1EDC1CF2B96A2BB00FE0313 /* Extentions.swift in Sources */,
