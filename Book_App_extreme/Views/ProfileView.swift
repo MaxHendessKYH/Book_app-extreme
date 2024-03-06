@@ -60,8 +60,8 @@ struct ProfileView: View {
                     .bold()
                 
                 TextEditor(text: $presentationText)
-                             .padding(80)
-                             .border(.black, width: 1)
+                              .border(.black, width: 1)
+                              .frame(height: 200)
                      }
             .padding(20)
                         Button(action: {
