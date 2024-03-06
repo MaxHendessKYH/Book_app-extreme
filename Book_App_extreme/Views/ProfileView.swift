@@ -12,9 +12,11 @@ struct ProfileView: View {
     @ObservedObject var viewModel = ProfileViewViewModel()
     @State var name: String = ""
     @State var mail: String = ""
-    @State var dateOfRegistration: TimeInterval? = nil
     
     @State var presentationText: String = ""
+    @State var avatar: String = "person"
+    
+    @State var avatarColor: Color = Color.blue
     
     var body: some View {
         ScrollView {
@@ -24,23 +26,46 @@ struct ProfileView: View {
                     .bold()
                     Circle()
                         .frame(width: 100, height: 100, alignment: .top)
-                        .foregroundStyle(.brown)
+                        .foregroundStyle(avatarColor)
                         .overlay(
-                            Button(action: {
-                                // Sätt en avatar eller liknande?
-                                print("Button pressed!")
-                            }) {
-                                Image(systemName: "person.fill")
+                            Image(systemName: getSytemImageString())
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 50, height: 50)
                                     .foregroundColor(.white)
-                            }
                         )
-                    
+                        .contextMenu {
+                             Button {
+                                 setSytemImageString(image: "person")
+                                 setAvatarColor(color: Color.blue)
+                             } label: {
+                                 Label("Person", systemImage: "person")
+                             }
+                            
+                            Button {
+                                setSytemImageString(image: "heart")
+                                setAvatarColor(color: Color.red)
+                            } label: {
+                                Label("Heart", systemImage: "heart")
+                            }
+                            
+                            Button {
+                                setSytemImageString(image: "star")
+                                setAvatarColor(color: Color.yellow)
+                            } label: {
+                                Label("Star", systemImage: "star")
+                            }
+                            
+                            Button {
+                                setSytemImageString(image: "smiley")
+                                setAvatarColor(color: Color.green)
+                            } label: {
+                                Label("Smiley", systemImage: "smiley")
+                            }
+                         }
                     
                     VStack {
-                        Text("Welcome,  Jorgen!")
+                        Text("Welcome,  \(viewModel.getUserName())")
                             .bold()
                             .font(.title2)
                             .padding()
@@ -94,7 +119,21 @@ struct ProfileView: View {
                 
             }
         }
+    func setSytemImageString(image: String){
+        avatar = image
     }
+    
+    func getSytemImageString() -> String {
+        return avatar
+    }
+    func setAvatarColor(color: Color){
+        avatarColor = color
+    }
+    
+    func getAvatarColor() -> Color {
+        return avatarColor
+    }
+}
 
 #Preview {
     ProfileView()

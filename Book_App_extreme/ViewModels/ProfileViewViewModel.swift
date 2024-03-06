@@ -13,6 +13,8 @@ class ProfileViewViewModel: ObservableObject {
     @Published var name: String = ""
     @Published var registrationDate: String?
     
+    @Published var avatarString: String?
+    
     
     func getUserMail() -> String {
         if let user = Auth.auth().currentUser {
@@ -20,6 +22,15 @@ class ProfileViewViewModel: ObservableObject {
               return mail
           }
         return "No mail to display"
+      }
+    
+    func getUserName() -> String {
+        if let user = Auth.auth().currentUser {
+            guard let nameHere = user.displayName else { return "no name" }
+            print("Användare: \(nameHere)")
+              return name
+          }
+        return "NOOOOO"
       }
     
     func getUserRegistrationDate() -> String {
@@ -37,5 +48,9 @@ class ProfileViewViewModel: ObservableObject {
         df.dateStyle = .medium
         df.timeStyle = .medium
         return df.string(from: date)
+    }
+    
+    func changeAvatar() -> String {
+        return avatarString ?? ""
     }
 }
