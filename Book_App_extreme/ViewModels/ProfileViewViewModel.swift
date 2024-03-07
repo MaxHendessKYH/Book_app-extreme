@@ -5,27 +5,70 @@ class ProfileViewViewModel: ObservableObject {
     
     @Published var registrationDate: String?
     @Published var presentation: String?
-    @Published var hasFetchedPresentation = false
-    
+    @Published var mail: String?
+    @Published var name: String?
     @Published var avatarString: String?
     
-    func getUserMail() -> String {
+    @Published var hasFetchedName = false
+    @Published var hasFetchedPresentation = false
+    @Published var hasFetchedMail = false
+    @Published var hasFetchedDate = false
+    @Published var hasFetchedAvatar = false
+    
+    
+    
+    init() {
+        getUserName()
+        getUserMail()
+        getUserRegistrationDate()
+        getUserPresentation()
+        getUserAvatar()
+       }
+    
+    func getUserMail() {
+        guard !hasFetchedMail else { return }
         if let user = Auth.auth().currentUser {
-            guard let mail = user.email else { return "nomail@empty.com" }
-              return mail
+            guard let mail = user.email else { return}
+            self.mail = mail
+            self.hasFetchedMail = true
           }
-        return "No mail to display"
       }
     
-    func getUserName() -> String {
+    func getUserName() {
+        guard !hasFetchedName else { return }
         if let user = Auth.auth().currentUser {
-            guard let name = user.displayName else { return "User" }
-              return name
+            guard let name = user.displayName else { return }
+            self.name = name
+            self.hasFetchedName = true
           }
-        return "User"
       }
     
-    func getPresentation() -> String {
+    func getUserAvatar() {
+        if !hasFetchedAvatar {
+            if let user = Auth.auth().currentUser {
+                let firestore = Firestore.firestore()
+                let avatarStringReference = firestore.collection("userAvatar").document(user.uid)
+                avatarStringReference.getDocument { (document, error) in
+                    if let document = document, document.exists {
+                        if let avatar = document.data()?["avatarString"] as? String {
+                            self.avatarString = avatar
+                            self.hasFetchedAvatar = true
+                        } else {
+                            print("No avatar found for user with ID: \(user.uid).")
+                            
+                        }
+                    } else {
+                        print("Error fetching avatar: \(error?.localizedDescription ?? "Unknown error")")
+                    }
+                }
+            }
+        } else {
+            overwriteAvatarString(avatar: "person")
+        }
+    }
+    
+    func getUserPresentation() {
+        guard !hasFetchedPresentation else { return }
         if let user = Auth.auth().currentUser {
             let firestore = Firestore.firestore()
             let presentationTextReference = firestore.collection("userPresentation").document(user.uid)
@@ -34,6 +77,7 @@ class ProfileViewViewModel: ObservableObject {
                 if let document = document, document.exists {
                         if let presentationText = document.data()?["text"] as? String {
                             self.presentation = presentationText
+                            self.hasFetchedPresentation = true
                         } else {
                             print("No text found for user with ID: \(user.uid).")
                         }
@@ -43,7 +87,6 @@ class ProfileViewViewModel: ObservableObject {
             }
         }
         
-        return presentation ?? "NOTHING"
     }
     
     func changeDisplayName(newName: String) {
@@ -67,27 +110,45 @@ class ProfileViewViewModel: ObservableObject {
         }
     }
     
-    func addPresentationText(presentationText: String) {
+    func overwritePresentationText(presentationText: String) {
         if let user = Auth.auth().currentUser {
             let firestore = Firestore.firestore()
             let presentationTextReference = firestore.collection("userPresentation").document(user.uid)
-            presentationTextReference.setData(["text": presentationText]) { (error) in
-                if let error = error {
-                    print("Error \(user.uid): \(error.localizedDescription)")
-                } else {
-                    print("Presentationtext added for user: \(user.uid)")
+            if !presentationText.isEmpty {
+                presentationTextReference.setData(["text": presentationText]) { (error) in
+                    if let error = error {
+                        print("Error \(user.uid): \(error.localizedDescription)")
+                    } else {
+                        print("Presentationtext added for user: \(user.uid)")
+                    }
                 }
+            } else {
+                print("Presentationtext empty")
             }
         }
     }
+    
+    func overwriteAvatarString(avatar: String) {
+        if let user = Auth.auth().currentUser {
+            let firestore = Firestore.firestore()
+            let avatarStringReference = firestore.collection("userAvatar").document(user.uid)
+                avatarStringReference.setData(["avatarString": avatar]) { (error) in
+                    if let error = error {
+                        print("Error \(user.uid): \(error.localizedDescription)")
+                    } else {
+                        print("Presentationtext added for user: \(user.uid)")
+                    }
+                }
+            
+        }
+    }
 
-    func getUserRegistrationDate() -> String {
+    func getUserRegistrationDate() {
+        guard !hasFetchedDate else { return }
          if let user = Auth.auth().currentUser {
              let registrationDate = formatDateToString(from: user.metadata.creationDate!)
-             return registrationDate
-             
-         } else {
-             return "No date"
+             self.registrationDate = registrationDate
+             self.hasFetchedDate = true
          }
      }
     
@@ -107,7 +168,5 @@ class ProfileViewViewModel: ObservableObject {
         return df.string(from: date)
     }
     
-    private func changeAvatar() -> String {
-        return avatarString ?? ""
-    }
+    
 }

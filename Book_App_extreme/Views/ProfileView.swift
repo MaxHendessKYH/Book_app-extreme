@@ -4,12 +4,11 @@ struct ProfileView: View {
     
     @ObservedObject var viewModel = ProfileViewViewModel()
     @State var name: String = ""
-    @State var mail: String = ""
-    
+    @State var mail: String = "NoMail"
+    @State var date: String = "NoDate"
     @State var presentationText: String = ""
-    @State var avatar: String = "person"
+    @State var avatar: String = ""
     
-    @State var avatarColor: Color = Color.blue
     @State var showEdit = false
     @State var hasFetchedPresentation = false
     
@@ -19,89 +18,127 @@ struct ProfileView: View {
                 Text("Your Profile")
                     .font(.largeTitle)
                     .bold()
-                Circle()
-                    .frame(width: 100, height: 100, alignment: .top)
-                    .foregroundStyle(avatarColor)
-                    .overlay(
-                        Image(systemName: getSytemImageString())
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 50, height: 50)
-                            .foregroundColor(.white)
-                    )
-                    .contextMenu {
-                        Button {
-                            setSytemImageString(image: "person")
-                            setAvatarColor(color: Color.blue)
-                        } label: {
-                            Label("Person", systemImage: "person")
+                VStack {
+                    Circle()
+                        .frame(width: 100, height: 100, alignment: .top)
+                        .foregroundStyle(avatarColor(avatar: viewModel.avatarString ?? ""))
+                        .overlay(
+                            Image(systemName: viewModel.avatarString ?? avatar)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 50, height: 50)
+                                .foregroundColor(.white)
+                        )
+                        .contextMenu {
+                            Button {
+                                avatar = "person"
+                                
+                            } label: {
+                                Label("Person", systemImage: "person")
+                            }
+                            
+                            Button {
+                                avatar = "heart"
+                                
+                            } label: {
+                                Label("Heart", systemImage: "heart")
+                            }
+                            
+                            Button {
+                                avatar = "star"
+                                
+                            } label: {
+                                Label("Star", systemImage: "star")
+                            }
+                            
+                            Button {
+                                avatar = "smiley"
+                                
+                            } label: {
+                                Label("Smiley", systemImage: "smiley")
+                            }
+                            
+                            Button {
+                                avatar = "book"
+                                
+                            } label: {
+                                Label("Book", systemImage: "book")
+                            }
+                            
                         }
-                        
-                        Button {
-                            setSytemImageString(image: "heart")
-                            setAvatarColor(color: Color.red)
-                        } label: {
-                            Label("Heart", systemImage: "heart")
+                        .onChange(of: avatar, initial: false) { oldValue, newValue in
+                            viewModel.avatarString = newValue
                         }
-                        
-                        Button {
-                            setSytemImageString(image: "star")
-                            setAvatarColor(color: Color.yellow)
-                        } label: {
-                            Label("Star", systemImage: "star")
-                        }
-                        
-                        Button {
-                            setSytemImageString(image: "smiley")
-                            setAvatarColor(color: Color.green)
-                        } label: {
-                            Label("Smiley", systemImage: "smiley")
-                        }
-                    }
+                } .onAppear {
+                    viewModel.getUserAvatar()
+                }
                 
                 VStack {
-                    Text("Welcome,  \(viewModel.getUserName())")
-                        .bold()
-                        .font(.title2)
-                        .padding()
-                    Text("Mail: \t\(viewModel.getUserMail())")
-                        .bold()
-                        .font(.title3)
-                    Text("User since: \t \(viewModel.getUserRegistrationDate())")
-                        .bold()
-                        .font(.title3)
+                    if viewModel.hasFetchedName {
+                        Text("Welcome,  \(viewModel.name ?? name)")
+                            .bold()
+                            .font(.title2)
+                            .padding()
+                    } else {
+                        Text("Welcome, \(name)")
+                            .bold()
+                            .font(.title2)
+                            .padding()
+                    }
+                    if viewModel.hasFetchedMail {
+                        Text("Mail: \t\(viewModel.mail ?? mail)")
+                            .bold()
+                            .font(.title3)
+                    }
+                    if viewModel.hasFetchedDate {
+                        Text("User since: \t \(viewModel.registrationDate ?? date)")
+                            .bold()
+                            .font(.title3)
+                    }
                     Text("About me".uppercased())
                         .padding(5)
                         .font(.title3)
                     VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, content: {
                         
-                        Text(fetchText(hasFetched: hasFetchedPresentation))
-                            .font(.system(size: 16))
-                            .bold()
-                            .italic()
-                            .foregroundStyle(.indigo)
-                        
-                        
-                        
+                        if viewModel.hasFetchedPresentation {
+                            Text(viewModel.presentation ?? "Could not fetch")
+                                .font(.system(size: 16))
+                                .bold()
+                                .italic()
+                                .foregroundStyle(.indigo)
+                        } else {
+                            Text(presentationText)
+                                .font(.system(size: 16))
+                                .bold()
+                                .italic()
+                                .foregroundStyle(.indigo)
+                        }
                     })
-                    
-                    
+                } .onAppear {
+                    viewModel.getUserName()
+                    viewModel.getUserMail()
+                    viewModel.getUserRegistrationDate()
+                    viewModel.getUserPresentation()
                 }
                 
                 Button(showEdit ? "Hide edit" : "Show edit") {
                     showEdit.toggle()
-                    hasFetchedPresentation = true
-                    
                 }
                 .padding(5)
                 
                 if showEdit {
-                    
                     Text("Name")
                         .bold()
-                    TextField( "Your name: ", text: $name)
+                    TextField( "Your name... ", text: $name)
                         .frame(width: 150, height: 40)
                         .border(.gray, width: 1)
+                        .onAppear {
+                            name = viewModel.name ?? "NoName"
+                        }
+                        .onChange(of: name, initial: false) { oldValue, newValue in
+                            viewModel.name = newValue
+                            
+                        }
                     
                     Text("About You")
                         .bold()
@@ -109,28 +146,27 @@ struct ProfileView: View {
                     TextEditor(text: $presentationText)
                         .border(.gray, width: 1)
                         .frame(height: 70)
+                        .onAppear {
+                            presentationText = viewModel.presentation ?? "NoPresentation"
+                        }
                         .onChange(of: presentationText, initial: false) { oldValue, newValue in
-                            
-                            presentationText = newValue
-                            
-                            
+                            viewModel.presentation = newValue
                         }
                 }
-                
             }
             .padding(20)
             
             if showEdit {
                 Button(action: {
                     viewModel.changeDisplayName(newName: name)
-                    viewModel.addPresentationText(presentationText: presentationText)
+                    viewModel.overwritePresentationText(presentationText: presentationText)
+                    viewModel.overwriteAvatarString(avatar: avatar)
                     showEdit.toggle()
-                    print("Button pressed!")
                 }) {
                     Text("Save Changes")
                         .foregroundColor(.white)
                         .bold()
-                        .padding(10)
+                        .padding(5)
                         .background(.green)
                         .cornerRadius(5)
                 }
@@ -141,43 +177,29 @@ struct ProfileView: View {
                 Text("Log out")
                     .foregroundColor(.white)
                     .bold()
-                    .padding(10)
+                    .padding(5)
                     .background(.red)
                     .cornerRadius(5)
             }
         }
     }
     
-    func fetchText(hasFetched: Bool) -> String {
-        if(!hasFetched) {
-            DispatchQueue.main.async {
-                presentationText = viewModel.getPresentation()
-            }
+    func avatarColor(avatar: String) -> Color {
+        switch avatar {
+        case "person":
+            return Color.blue
+        case "heart":
+            return Color.red
+        case "star":
+            return Color.green
+        case "smiley":
+            return Color.yellow
+        case "book":
+            return Color.orange
+        default:
+            return Color.gray
         }
-        return presentationText
     }
-    
-    func setSytemImageString(image: String){
-        avatar = image
-    }
-    
-    func getSytemImageString() -> String {
-        return avatar
-    }
-    func setAvatarColor(color: Color){
-        avatarColor = color
-    }
-    
-    func getAvatarColor() -> Color {
-        return avatarColor
-    }
-    //    func setPresentation(presentation: String) {
-    //        presentationText = presentation
-    //    }
-    //
-    //    func getPresentation() -> String {
-    //        return presentationText
-    //    }
 }
 
 #Preview {
