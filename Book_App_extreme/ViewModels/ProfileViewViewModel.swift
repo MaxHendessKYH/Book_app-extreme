@@ -2,7 +2,6 @@ import Foundation
 import Firebase
 
 class ProfileViewViewModel: ObservableObject {
-    
     @Published var registrationDate: String?
     @Published var presentation: String?
     @Published var mail: String?
@@ -15,15 +14,13 @@ class ProfileViewViewModel: ObservableObject {
     @Published var hasFetchedDate = false
     @Published var hasFetchedAvatar = false
     
-    
-    
     init() {
         getUserName()
         getUserMail()
         getUserRegistrationDate()
         getUserPresentation()
         getUserAvatar()
-       }
+    }
     
     func getUserMail() {
         guard !hasFetchedMail else { return }
@@ -31,8 +28,8 @@ class ProfileViewViewModel: ObservableObject {
             guard let mail = user.email else { return}
             self.mail = mail
             self.hasFetchedMail = true
-          }
-      }
+        }
+    }
     
     func getUserName() {
         guard !hasFetchedName else { return }
@@ -40,8 +37,8 @@ class ProfileViewViewModel: ObservableObject {
             guard let name = user.displayName else { return }
             self.name = name
             self.hasFetchedName = true
-          }
-      }
+        }
+    }
     
     func getUserAvatar() {
         if !hasFetchedAvatar {
@@ -75,12 +72,12 @@ class ProfileViewViewModel: ObservableObject {
             
             presentationTextReference.getDocument { (document, error) in
                 if let document = document, document.exists {
-                        if let presentationText = document.data()?["text"] as? String {
-                            self.presentation = presentationText
-                            self.hasFetchedPresentation = true
-                        } else {
-                            print("No text found for user with ID: \(user.uid).")
-                        }
+                    if let presentationText = document.data()?["text"] as? String {
+                        self.presentation = presentationText
+                        self.hasFetchedPresentation = true
+                    } else {
+                        print("No text found for user with ID: \(user.uid).")
+                    }
                 } else {
                     print("Error fetching presentation: \(error?.localizedDescription ?? "Unknown error")")
                 }
@@ -132,25 +129,25 @@ class ProfileViewViewModel: ObservableObject {
         if let user = Auth.auth().currentUser {
             let firestore = Firestore.firestore()
             let avatarStringReference = firestore.collection("userAvatar").document(user.uid)
-                avatarStringReference.setData(["avatarString": avatar]) { (error) in
-                    if let error = error {
-                        print("Error \(user.uid): \(error.localizedDescription)")
-                    } else {
-                        print("Presentationtext added for user: \(user.uid)")
-                    }
+            avatarStringReference.setData(["avatarString": avatar]) { (error) in
+                if let error = error {
+                    print("Error \(user.uid): \(error.localizedDescription)")
+                } else {
+                    print("Presentationtext added for user: \(user.uid)")
                 }
+            }
             
         }
     }
-
+    
     func getUserRegistrationDate() {
         guard !hasFetchedDate else { return }
-         if let user = Auth.auth().currentUser {
-             let registrationDate = formatDateToString(from: user.metadata.creationDate!)
-             self.registrationDate = registrationDate
-             self.hasFetchedDate = true
-         }
-     }
+        if let user = Auth.auth().currentUser {
+            let registrationDate = formatDateToString(from: user.metadata.creationDate!)
+            self.registrationDate = registrationDate
+            self.hasFetchedDate = true
+        }
+    }
     
     func userLogOut() {
         do {
@@ -161,12 +158,10 @@ class ProfileViewViewModel: ObservableObject {
         }
     }
     
-   private func formatDateToString(from date: Date) -> String {
+    private func formatDateToString(from date: Date) -> String {
         let df = DateFormatter()
         df.dateStyle = .medium
         df.timeStyle = .medium
         return df.string(from: date)
     }
-    
-    
 }

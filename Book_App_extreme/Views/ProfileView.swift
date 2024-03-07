@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct ProfileView: View {
-    
     @ObservedObject var viewModel = ProfileViewViewModel()
     @State var name: String = ""
     @State var mail: String = "NoMail"
@@ -10,7 +9,6 @@ struct ProfileView: View {
     @State var avatar: String = ""
     
     @State var showEdit = false
-    @State var hasFetchedPresentation = false
     
     var body: some View {
         ScrollView {
