@@ -8,7 +8,7 @@
 import Foundation
 
 
-class Books: Identifiable ,Comparable{
+class Books: Identifiable ,Comparable, Codable{
     
     
     static func == (lhs: Books, rhs: Books) -> Bool {

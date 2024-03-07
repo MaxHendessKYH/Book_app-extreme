@@ -6,62 +6,67 @@
 //
 import SwiftUI
 import Foundation
-import Firebase
+import FirebaseFirestore
+import FirebaseCore
+
 class BookListViewViewModel: ObservableObject{
     
+  
+        
+    //@Published var bookshelves : [(String, [Books])]? = []
     
-  @Published  var bokHyllor : [(String, [Books])] = [("test", []), ("Test2", [Books(titel: "Mybook", author: "Ali Alhasan")] )]
-    
-    
+    @Published var bookshelves : [[String: Any]]? = []
+
     let db =  Firestore.firestore()
+
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    init(){
+        
+
+        fetchLibrary()
+        
      
-    // Behövs inte, bara för testning
-    var listOfBooks = [Books(titel: "Ali", author: "husien"),
-                       Books(titel: "tli", author: "husien"),
-                       Books(titel: "AAAli", author: "husien"),
-                       Books(titel: "CCCli", author: "husien"),
-                       Books(titel: "BBBli", author: "husien"),]
+    }
+    
+    
     
  
     func addList(listTitel: String){
         
-        bokHyllor.append((listTitel, []))
+        bookshelves!.append(["titel": listTitel, "bookshelf": []])
+
+            uppdate()
+        print(bookshelves ?? [])
+        
     }
     
-    func removeList(listTitel: String){
+    func removeList(shelfIndex: Int){
         
-        
-        bokHyllor = bokHyllor.filter { $0.0 != listTitel }
+        if shelfIndex >= 0{
             
-        
+            bookshelves!.remove(at: shelfIndex)
+            
+        }
+     //   bookshelves = bookshelves.filter { $0.0 != listTitel }
+            
+        uppdate()
     }
     
-    func uppdateList(listToBeUppdated: [Books]){
+    func uppdateshelf(listToBeUppdated: [Books]){
         
         
         //Implementeras efter vi fixar med databasen då uppdateras databasen med den nya listan
     }
     
-    func sortList(unSortedList: [Books]) -> [Books]{
+    func sortshelf(unSortedList: [Books]) -> [Books]{
         
         var sortedList = unSortedList
 
         sortedList.sort()
         
-        print(unSortedList)
+        /*print(unSortedList)
         print(sortedList)
+         */
         
         
         return sortedList
@@ -69,12 +74,13 @@ class BookListViewViewModel: ObservableObject{
     
     
     
-    func save(){
+    func uppdate(){
+                
+        
         
         db.collection("library")
             .document("myLibrary")
-            .setData(["userLibrary": self.bokHyllor])
-        
+            .setData(["userLibrary": bookshelves ?? [] ])
      
     }
     
@@ -86,7 +92,7 @@ class BookListViewViewModel: ObservableObject{
         documentReference.getDocument { (document, error) in
             if let error = error {
                 print("Error getting document: \(error)")
-                return
+                
                 
             } else {
                 if let document = document, document.exists {
@@ -94,24 +100,18 @@ class BookListViewViewModel: ObservableObject{
 
                     let data = document.data()
 
-                    if let bookArray = data?["books"] as? [(String, [Books])] {
+                    if let bookArray = data?["userLibrary"] as? [[String: Any]] {
                         
-                        for tuple in bookArray {
-                            let title = tuple.0
-                            let subArray = tuple.1
-                            print("Title: \(title), Subarray: \(subArray)")
-                            
-                        }
-                        
-                        self.bokHyllor = bookArray
+                    
+                        self.bookshelves = bookArray
 
                     } else {
                         print("Error: Unable to retrieve the 'books' field or it's not an array of tuples.")
-                        return
+                        
                     }
                 } else {
                     print("Document does not exist")
-                    return
+                    
                 }
             }
         }
@@ -119,3 +119,47 @@ class BookListViewViewModel: ObservableObject{
 
     }
   }
+
+
+/*
+ func fetchLibrary(){
+     
+     let documentReference = db.collection("library").document("myLibrary")
+
+
+     documentReference.getDocument { (document, error) in
+         if let error = error {
+             print("Error getting document: \(error)")
+             
+             
+         } else {
+             if let document = document, document.exists {
+
+
+                 let data = document.data()
+
+                 if let bookArray = data?["books"] as? [(String, [Books])] {
+                     
+                     for tuple in bookArray {
+                         let title = tuple.0
+                         let subArray = tuple.1
+                         print("Title: \(title), Subarray: \(subArray)")
+                         
+                     }
+                     
+                     self.bookshelves = bookArray
+
+                 } else {
+                     print("Error: Unable to retrieve the 'books' field or it's not an array of tuples.")
+                     
+                 }
+             } else {
+                 print("Document does not exist")
+                 
+             }
+         }
+     }
+     
+
+ }
+ */
