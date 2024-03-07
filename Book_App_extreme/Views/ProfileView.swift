@@ -1,12 +1,13 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @ObservedObject var viewModel = ProfileViewViewModel()
+    
     @State var name: String = ""
     @State var mail: String = "NoMail"
     @State var date: String = "NoDate"
     @State var presentationText: String = ""
     @State var avatar: String = ""
+    @ObservedObject var viewModel = ProfileViewViewModel()
     
     @State var showEdit = false
     
