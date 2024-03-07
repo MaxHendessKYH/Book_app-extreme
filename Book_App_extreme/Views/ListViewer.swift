@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ListViewer: View {
-    @State var bookList: [Books] = [Books(titel: "Harry Potter", author: "me", id: UUID(), imgUrl: URL(string: "mmm")!)]
+    @State var bookList: [Books] = [Books(titel: "Harry Potter", author: "me")]
     
     var body: some View {
         ZStack{
