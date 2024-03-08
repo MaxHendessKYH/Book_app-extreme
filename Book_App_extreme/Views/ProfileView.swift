@@ -28,6 +28,8 @@ struct ProfileView: View {
                                 .frame(width: 50, height: 50)
                                 .foregroundColor(.white)
                         )
+                    
+                    // Context-menu for image
                         .contextMenu {
                             Button {
                                 avatar = "person"
@@ -72,6 +74,7 @@ struct ProfileView: View {
                     viewModel.getUserAvatar()
                 }
                 
+                // Displaying info
                 VStack {
                     if viewModel.hasFetchedName {
                         Text("Welcome,  \(viewModel.name ?? name)")
@@ -97,8 +100,8 @@ struct ProfileView: View {
                     Text("About me".uppercased())
                         .padding(5)
                         .font(.title3)
+                    
                     VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, content: {
-                        
                         if viewModel.hasFetchedPresentation {
                             Text(viewModel.presentation ?? "Could not fetch")
                                 .font(.system(size: 16))
@@ -125,6 +128,7 @@ struct ProfileView: View {
                 }
                 .padding(5)
                 
+                // Hidden edit-fields
                 if showEdit {
                     Text("Name")
                         .bold()
@@ -155,6 +159,7 @@ struct ProfileView: View {
             }
             .padding(20)
             
+            // Saving
             if showEdit {
                 Button(action: {
                     viewModel.changeDisplayName(newName: name)
@@ -170,6 +175,8 @@ struct ProfileView: View {
                         .cornerRadius(5)
                 }
             }
+            
+            // Log out
             Button(action: {
                 viewModel.userLogOut()
             }) {
@@ -183,6 +190,7 @@ struct ProfileView: View {
         }
     }
     
+    // Change color-background on image
     func avatarColor(avatar: String) -> Color {
         switch avatar {
         case "person":

@@ -14,8 +14,6 @@ class ProfileViewViewModel: ObservableObject {
     @Published var hasFetchedDate = false
     @Published var hasFetchedAvatar = false
     
-    
-    // Test med inloggning direkt mot profile-view för att info ska uppdateras.
     init() {
         getUserName()
         getUserMail()
@@ -24,6 +22,7 @@ class ProfileViewViewModel: ObservableObject {
         getUserAvatar()
     }
     
+    /// Fetches the current users mail-address from Firebase as String.
     func getUserMail() {
         guard !hasFetchedMail else { return }
         if let user = Auth.auth().currentUser {
@@ -33,6 +32,7 @@ class ProfileViewViewModel: ObservableObject {
         }
     }
     
+    /// Fetches the current users name from Firebase as String.
     func getUserName() {
         guard !hasFetchedName else { return }
         if let user = Auth.auth().currentUser {
@@ -42,6 +42,7 @@ class ProfileViewViewModel: ObservableObject {
         }
     }
     
+    /// Fetches the current users system-image from Firebase as String.
     func getUserAvatar() {
         if !hasFetchedAvatar {
             if let user = Auth.auth().currentUser {
@@ -64,6 +65,7 @@ class ProfileViewViewModel: ObservableObject {
         }
     }
     
+    /// Fetches the current users presentation-text from Firebase as String.
     func getUserPresentation() {
         guard !hasFetchedPresentation else { return }
         if let user = Auth.auth().currentUser {
@@ -83,9 +85,33 @@ class ProfileViewViewModel: ObservableObject {
                 }
             }
         }
-        
     }
     
+    /// Formatting a Date to a String, without the time.
+    /// - Parameters:
+    ///      - date: The Date-struct to format.
+    /// - Returns:
+    ///     A String of the Date.
+    private func formatDateToString(from date: Date) -> String {
+        let df = DateFormatter()
+        df.dateStyle = .medium
+        df.timeStyle = .none
+        return df.string(from: date)
+    }
+    
+    /// Fetches the current users date of registration from Firebase as String.
+    func getUserRegistrationDate() {
+        guard !hasFetchedDate else { return }
+        if let user = Auth.auth().currentUser {
+            let registrationDate = formatDateToString(from: user.metadata.creationDate!)
+            self.registrationDate = registrationDate
+            self.hasFetchedDate = true
+        }
+    }
+    
+    /// Changes the current users name.
+    /// - Parameters:
+    ///      - newName: The replacement-name as String.
     func changeDisplayName(newName: String) {
         if let user = Auth.auth().currentUser {
             let request = user.createProfileChangeRequest()
@@ -107,6 +133,9 @@ class ProfileViewViewModel: ObservableObject {
         }
     }
     
+    /// Overwrites the current users presentation-text.
+    /// - Parameters:
+    ///      - presentationText: The replacement-text as String.
     func overwritePresentationText(presentationText: String) {
         if let user = Auth.auth().currentUser {
             let firestore = Firestore.firestore()
@@ -125,6 +154,9 @@ class ProfileViewViewModel: ObservableObject {
         }
     }
     
+    /// Overwrites the current users image-string from system-images.
+    /// - Parameters:
+    ///      - avatar: The replacement image-string.
     func overwriteAvatarString(avatar: String) {
         if let user = Auth.auth().currentUser {
             let firestore = Firestore.firestore()
@@ -136,19 +168,10 @@ class ProfileViewViewModel: ObservableObject {
                     print("Image updated for user: \(user.uid)")
                 }
             }
-            
         }
     }
     
-    func getUserRegistrationDate() {
-        guard !hasFetchedDate else { return }
-        if let user = Auth.auth().currentUser {
-            let registrationDate = formatDateToString(from: user.metadata.creationDate!)
-            self.registrationDate = registrationDate
-            self.hasFetchedDate = true
-        }
-    }
-    
+    /// Logging out the current user.
     func userLogOut() {
         do {
             try Auth.auth().signOut()
@@ -156,12 +179,5 @@ class ProfileViewViewModel: ObservableObject {
         } catch let signOutError as NSError {
             print("Error: \(signOutError.localizedDescription)")
         }
-    }
-    
-    private func formatDateToString(from date: Date) -> String {
-        let df = DateFormatter()
-        df.dateStyle = .medium
-        df.timeStyle = .none
-        return df.string(from: date)
     }
 }
