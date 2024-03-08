@@ -14,6 +14,8 @@ class ProfileViewViewModel: ObservableObject {
     @Published var hasFetchedDate = false
     @Published var hasFetchedAvatar = false
     
+    
+    // Test med inloggning direkt mot profile-view för att info ska uppdateras.
     init() {
         getUserName()
         getUserMail()
@@ -59,7 +61,7 @@ class ProfileViewViewModel: ObservableObject {
                     }
                 }
             }
-        } 
+        }
     }
     
     func getUserPresentation() {
@@ -114,7 +116,7 @@ class ProfileViewViewModel: ObservableObject {
                     if let error = error {
                         print("Error \(user.uid): \(error.localizedDescription)")
                     } else {
-                        print("Presentationtext added for user: \(user.uid)")
+                        print("Presentationtext updated for user: \(user.uid)")
                     }
                 }
             } else {
@@ -131,7 +133,7 @@ class ProfileViewViewModel: ObservableObject {
                 if let error = error {
                     print("Error \(user.uid): \(error.localizedDescription)")
                 } else {
-                    print("Presentationtext added for user: \(user.uid)")
+                    print("Image updated for user: \(user.uid)")
                 }
             }
             
@@ -159,7 +161,7 @@ class ProfileViewViewModel: ObservableObject {
     private func formatDateToString(from date: Date) -> String {
         let df = DateFormatter()
         df.dateStyle = .medium
-        df.timeStyle = .medium
+        df.timeStyle = .none
         return df.string(from: date)
     }
 }
