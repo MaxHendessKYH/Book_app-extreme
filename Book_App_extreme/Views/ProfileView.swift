@@ -16,7 +16,7 @@ struct ProfileView: View {
             VStack {
                 Text("Your Profile")
                     .font(.largeTitle)
-                    .bold()
+                    .bold() 
                 VStack {
                     Circle()
                         .frame(width: 100, height: 100, alignment: .top)

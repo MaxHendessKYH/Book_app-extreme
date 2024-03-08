@@ -59,9 +59,7 @@ class ProfileViewViewModel: ObservableObject {
                     }
                 }
             }
-        } else {
-            overwriteAvatarString(avatar: "person")
-        }
+        } 
     }
     
     func getUserPresentation() {
