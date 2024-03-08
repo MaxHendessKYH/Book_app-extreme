@@ -11,7 +11,7 @@ struct HomeView: View {
     @ObservedObject var viewModel = BookListViewViewModel()
     
     @State var newTitel: String = ""
-    var maxBook = BookItem(id: "ff", volumeInfo: VolumeInfo(title: "Harry Potter", authors: ["Unknown"], description: "an interresting book", publishedDate: "Today", categories: ["Unknown"], pageCount: 233, language: "English"))
+   /* var maxBook = BookItem(id: "ff", volumeInfo: VolumeInfo(title: "Harry Potter", authors: ["Unknown"], description: "an interresting book", publishedDate: "Today", categories: ["Unknown"], pageCount: 233, language: "English"))*/
     
     var body: some View {
         NavigationView{
