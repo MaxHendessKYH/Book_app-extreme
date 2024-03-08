@@ -21,10 +21,8 @@ class BookListViewViewModel: ObservableObject{
 
     
     init(){
-        
 
         fetchLibrary()
-        
      
     }
     
@@ -71,6 +69,7 @@ class BookListViewViewModel: ObservableObject{
         
         return sortedList
     }
+    
     
     
     
