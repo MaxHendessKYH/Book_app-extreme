@@ -8,11 +8,14 @@ import SwiftUI
 import Foundation
 import FirebaseFirestore
 import FirebaseCore
+import FirebaseAuth
 
 class BookListViewViewModel: ObservableObject{
     
+    
+    
   
-        
+    var userId: String?
     //@Published var bookshelves : [(String, [Books])]? = []
     
     @Published var bookshelves : [[String: Any]]? = []
@@ -21,10 +24,16 @@ class BookListViewViewModel: ObservableObject{
 
     
     init(){
-
+        
+        getUserId()
+        
         fetchLibrary()
-     
+    
     }
+    
+   
+        
+        
     
     
     
@@ -34,8 +43,9 @@ class BookListViewViewModel: ObservableObject{
         bookshelves!.append(["titel": listTitel, "bookshelf": []])
 
             uppdate()
-        print(bookshelves ?? [])
-        
+
+        print(userId ?? "No userId")
+
     }
     
     func removeList(shelfIndex: Int){
@@ -76,16 +86,16 @@ class BookListViewViewModel: ObservableObject{
     func uppdate(){
                 
         
-        
+        //"myLibrary"
         db.collection("library")
-            .document("myLibrary")
+            .document(self.userId ?? "path")
             .setData(["userLibrary": bookshelves ?? [] ])
      
     }
     
     func fetchLibrary(){
         
-        let documentReference = db.collection("library").document("myLibrary")
+        let documentReference = db.collection("library").document(self.userId ?? "path")
 
 
         documentReference.getDocument { (document, error) in
@@ -117,7 +127,17 @@ class BookListViewViewModel: ObservableObject{
         
 
     }
+    func getUserId(){
+        
+        
+        let user = Auth.auth().currentUser
+      
+        self.userId = user?.uid
+        
+    }
   }
+
+
 
 
 /*

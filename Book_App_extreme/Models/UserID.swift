@@ -7,9 +7,11 @@
 
 import Foundation
 
-struct UserID{
+class UserID{
     
     static let shared = UserID()
     
-    var userID: String? 
+    var userId: String? = nil
+    
+    
 }

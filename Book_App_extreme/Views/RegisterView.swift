@@ -11,6 +11,7 @@ import SwiftUI
 struct RegisterView: View {
     
     @StateObject var viewModel = RegisterViewViewModel()
+    
        
         var body: some View {
             VStack {
@@ -67,7 +68,10 @@ struct RegisterView: View {
                             .cornerRadius(15)
                             
                             Button(action: {
+                                //
+                                
                                 viewModel.register()
+                                //
                             }, label: {
                                 Text("Create Account")
                                     .foregroundColor(.white)

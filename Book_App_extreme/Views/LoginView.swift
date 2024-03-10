@@ -10,6 +10,8 @@ import SwiftUI
 struct LoginView: View {
     @StateObject var viewModel = LoginViewViewModel()
     
+
+    
     var body: some View {
         NavigationView{
             VStack{
@@ -33,7 +35,13 @@ struct LoginView: View {
                             .frame(maxWidth: .infinity, maxHeight: 40)
                             
                             Button(action: {
+                                
+                                //
+                                
                                 viewModel.login()
+                                
+                                
+                                //
                             }, label: {
                                 Text("Log In")
                                     .foregroundColor(.white)
