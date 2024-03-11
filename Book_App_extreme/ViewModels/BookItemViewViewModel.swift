@@ -22,4 +22,24 @@ class BookItemViewViewModel: ObservableObject {
             print("Error saving bookItem: \(error.localizedDescription)")
         }
     }
+    
+    func fetchReviews(completion: @escaping ([Review]?) -> Void) {
+           let db = Firestore.firestore()
+           let reviewsCollection = db.collection("reviews")
+
+           // Query reviews based on book item ID
+           reviewsCollection.whereField("bookItemId", isEqualTo: bookItem.id).getDocuments { (querySnapshot, error) in
+               if let error = error {
+                   print("Error fetching reviews: \(error.localizedDescription)")
+                   completion(nil)
+               } else {
+                   // Parse the documents into Review objects
+                   let reviews = querySnapshot?.documents.compactMap { document in
+                       try? document.data(as: Review.self)
+                   }
+
+                   completion(reviews)
+               }
+           }
+       }
 }

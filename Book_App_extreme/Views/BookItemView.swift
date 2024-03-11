@@ -48,7 +48,15 @@ struct BookItemView: View {
                 } else {
                     Button("Rate/Review") {
                         isRatingMode.toggle()
-                    }
+                        viewModel.fetchReviews { reviews in
+                            if let reviews = reviews {
+                                for review in reviews {
+                                    print("Review ID: \(review.id), Star: \(review.star), Comment: \(review.comment)")
+                                }
+                            } else {
+                                print("Failed to fetch reviews.")
+                            }
+                        }                    }
                     .padding()
                     .background(Color.white)
                     .foregroundColor(Color.brown)
