@@ -58,7 +58,7 @@ struct RegisterView: View {
                     TextField("Password (at least 8 character)", text: $viewModel.password)
                         .textFieldStyle(DefaultTextFieldStyle())
                     
-                    SecureField("Re-enter Password", text: $viewModel.repeatPassword)
+                    TextField("Re-enter Password", text: $viewModel.repeatPassword)
                         .textFieldStyle(DefaultTextFieldStyle())
                     
                     ZStack {
