@@ -18,13 +18,12 @@ struct HomeView: View {
             VStack{
                 ZStack {
                     /*
-                    NavigationLink{
-                        AddBookShelfView(viewModel: viewModel)
-                    }label :{
-                        Image(systemName: "plus")
-                    }
-                    */
-                    
+                     NavigationLink{
+                         AddBookShelfView(viewModel: viewModel)
+                     }label :{
+                         Image(systemName: "plus")
+                     }
+                     */
                     List{
                         ForEach(viewModel.bookshelves!.indices, id: \.self){ index in
                             if let shelfData = viewModel.bookshelves?[index],
@@ -47,19 +46,20 @@ struct HomeView: View {
                         })
                     }
                     
-                    Button(action: {
-                        AddBookShelfView(viewModel: viewModel)
-                    }) {
+                    NavigationLink (
+                    destination: AddBookShelfView(viewModel: viewModel),
+                    label: {
                         Text("Add bookshelf")
+                            .frame(height: 25)
+                            .frame(maxWidth: 150)
+                            .cornerRadius(10)
                             .foregroundColor(.white)
                             .bold()
                             .padding(10)
                             .background(.blue)
-                            .cornerRadius(5)
-                    }
+                            .cornerRadius(10)
+                    })
                 }
-                
-                
                 /*Ska vi radera detta??
                  
                 Text("Hello it is me")
