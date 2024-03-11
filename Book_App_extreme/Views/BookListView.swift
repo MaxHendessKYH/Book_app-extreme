@@ -30,8 +30,7 @@ struct BookListView: View {
             VStack{
                
                 // kan ändras till var senare om det behövs vid bookViewn 
-                let sortedList = bookViewModel.sortList(unSortedList: bookList)
-                
+                let sortedList = bookViewModel.sortshelf(unSortedList: bookList)                 
                 List(sortedList,id: \.id){ book in
                         
                         HStack{

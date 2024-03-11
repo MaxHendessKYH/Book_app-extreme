@@ -23,7 +23,7 @@ struct MainView: View {
     @ViewBuilder
     var accountView: some View{
         TabView {
-            BookListView()
+            HomeView()
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
