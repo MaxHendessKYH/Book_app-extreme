@@ -15,14 +15,14 @@ class ProfileViewViewModel: ObservableObject {
     @Published var hasFetchedAvatar = false
     
     init() {
-        getUserName()
+        getUserNameFromDictionary()
         getUserMail()
         getUserRegistrationDate()
         getUserPresentation()
         getUserAvatar()
     }
     
-    /// Fetches the current users mail-address from Firebase as String.
+    /// Fetches the current users mail-address from authentication from Firebase as String.
     func getUserMail() {
         guard !hasFetchedMail else { return }
         if let user = Auth.auth().currentUser {
@@ -33,12 +33,23 @@ class ProfileViewViewModel: ObservableObject {
     }
     
     /// Fetches the current users name from Firebase as String.
-    func getUserName() {
+    func getUserNameFromDictionary() {
         guard !hasFetchedName else { return }
         if let user = Auth.auth().currentUser {
-            guard let name = user.displayName else { return }
-            self.name = name
-            self.hasFetchedName = true
+            let firestore = Firestore.firestore()
+            let userName = firestore.collection("users").document(user.uid)
+            userName.getDocument { (document, error) in
+                if let document = document, document.exists {
+                    if let newName = document.data()?["name"] as? String {
+                        self.name = newName
+                        self.hasFetchedName = true
+                    } else {
+                        print("No text found for user with ID: \(user.uid).")
+                    }
+                } else {
+                    print("Error fetching presentation: \(error?.localizedDescription ?? "Unknown error")")
+                }
+            }
         }
     }
     
@@ -55,7 +66,6 @@ class ProfileViewViewModel: ObservableObject {
                             self.hasFetchedAvatar = true
                         } else {
                             print("No avatar found for user with ID: \(user.uid).")
-                            
                         }
                     } else {
                         print("Error fetching avatar: \(error?.localizedDescription ?? "Unknown error")")
@@ -109,27 +119,24 @@ class ProfileViewViewModel: ObservableObject {
         }
     }
     
-    /// Changes the current users name.
+    /// Overwrites the current users name.
     /// - Parameters:
-    ///      - newName: The replacement-name as String.
-    func changeDisplayName(newName: String) {
+    ///      - nameString: The replacement-name as String.
+    func overwriteName(nameString: String) {
         if let user = Auth.auth().currentUser {
-            let request = user.createProfileChangeRequest()
-            
-            if !newName.isEmpty {
-                request.displayName = newName
-                request.commitChanges { (error) in
+            let firestore = Firestore.firestore()
+            let userReference = firestore.collection("users").document(user.uid)
+            if !nameString.isEmpty {
+                userReference.updateData(["name": nameString]) { (error) in
                     if let error = error {
-                        print("Error: \(error.localizedDescription)")
+                        print("Error \(user.uid): \(error.localizedDescription)")
                     } else {
-                        print("Name has successfully changed")
+                        print("Name is updated: \(user.uid)")
                     }
                 }
             } else {
-                print("Name cannot be empty")
+                print("Name is empty")
             }
-        } else {
-            print("User is not not logged in")
         }
     }
     
@@ -178,6 +185,39 @@ class ProfileViewViewModel: ObservableObject {
             print("User has successfully logged out")
         } catch let signOutError as NSError {
             print("Error: \(signOutError.localizedDescription)")
+        }
+    }
+    
+    /// Deleting the current users stored documents for profile.
+    func deleteDocumentsForUser() {
+        if let user = Auth.auth().currentUser {
+            let userId = user.uid
+            let firestore = Firestore.firestore()
+            let presentationDocument = firestore.collection("userPresentation").document(userId)
+            let imageDocument = firestore.collection("userAvatar").document(userId)
+            let userData = firestore.collection("users").document(userId)
+            presentationDocument.delete()
+            imageDocument.delete()
+            userData.delete()
+            { error in
+                if let error = error {
+                    print("Error deleting document: \(error.localizedDescription)")
+                } else {
+                    print("Document deleted.")
+                }
+            }
+        }
+    }
+    
+    /// Deleting the current authentication user.
+    func deleteUser() {
+        guard let user = Auth.auth().currentUser else {return}
+        user.delete() { error in
+            if let error = error {
+                print("Error when trying to delete user: \(error.localizedDescription)")
+            } else {
+                print("User deleted.")
+            }
         }
     }
 }

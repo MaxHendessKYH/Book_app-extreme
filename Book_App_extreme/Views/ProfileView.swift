@@ -10,13 +10,14 @@ struct ProfileView: View {
     @ObservedObject var viewModel = ProfileViewViewModel()
     
     @State var showEdit = false
+    @State private var showWarning = false
     
     var body: some View {
         ScrollView {
             VStack {
                 Text("Your Profile")
                     .font(.largeTitle)
-                    .bold() 
+                    .bold()
                 VStack {
                     Circle()
                         .frame(width: 100, height: 100, alignment: .top)
@@ -117,7 +118,7 @@ struct ProfileView: View {
                         }
                     })
                 } .onAppear {
-                    viewModel.getUserName()
+                    viewModel.getUserNameFromDictionary()
                     viewModel.getUserMail()
                     viewModel.getUserRegistrationDate()
                     viewModel.getUserPresentation()
@@ -160,20 +161,18 @@ struct ProfileView: View {
             .padding(20)
             
             // Saving
-            if showEdit {
-                Button(action: {
-                    viewModel.changeDisplayName(newName: name)
-                    viewModel.overwritePresentationText(presentationText: presentationText)
-                    viewModel.overwriteAvatarString(avatar: avatar)
-                    showEdit.toggle()
-                }) {
-                    Text("Save Changes")
-                        .foregroundColor(.white)
-                        .bold()
-                        .padding(5)
-                        .background(.green)
-                        .cornerRadius(5)
-                }
+            Button(action: {
+                viewModel.overwriteName(nameString: name)
+                viewModel.overwritePresentationText(presentationText: presentationText)
+                viewModel.overwriteAvatarString(avatar: avatar)
+                showEdit.toggle()
+            }) {
+                Text("Save Changes")
+                    .foregroundColor(.white)
+                    .bold()
+                    .padding(5)
+                    .background(.green)
+                    .cornerRadius(5)
             }
             
             // Log out
@@ -184,8 +183,38 @@ struct ProfileView: View {
                     .foregroundColor(.white)
                     .bold()
                     .padding(5)
-                    .background(.red)
+                    .background(.orange)
                     .cornerRadius(5)
+            }
+            
+            // Delete user
+            if showEdit {
+                Button(action: {
+                    showWarning = true
+                    
+                }) {
+                    Text("Delete account")
+                        .foregroundColor(.white)
+                        .bold()
+                        .padding(5)
+                        .background(.red)
+                        .cornerRadius(5)
+                        .padding()
+                        .alert(isPresented: $showWarning) {
+                            // Bekräftelsedialogruta
+                            Alert(
+                                title: Text("Warning"),
+                                message: Text("Delete account?"),
+                                primaryButton: .destructive(Text("Delete")) {
+                                    viewModel.deleteDocumentsForUser()
+                                    viewModel.deleteUser()
+                                },
+                                secondaryButton: .cancel()
+                            )
+                        }
+                    Image(systemName: "exclamationmark.triangle")
+                        .foregroundStyle(.red)
+                }
             }
         }
     }
