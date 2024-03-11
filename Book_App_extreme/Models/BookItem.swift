@@ -9,4 +9,5 @@ import Foundation
 struct BookItem: Codable{
     let id: String
     let volumeInfo: VolumeInfo
+    var reviews:Review?=nil
 }
