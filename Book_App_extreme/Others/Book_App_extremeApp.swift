@@ -37,6 +37,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 @main
+
 struct Book_App_extremeApp: App {
   // register app delegate for Firebase setup
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate

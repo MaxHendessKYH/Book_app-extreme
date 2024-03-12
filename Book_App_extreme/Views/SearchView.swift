@@ -33,7 +33,7 @@ struct SearchView: View {
                 // show books from api
                 ForEach(apiBooks, id: \.id){book in
                     NavigationLink{
-                        BookItemView(bookItem: book)
+                        BookItemView(bookItem: book,viewModelRatings:BookItemViewViewModel(bookItem: book))
                     } label: {
                         Text(book.volumeInfo.title)
                     }
@@ -41,7 +41,7 @@ struct SearchView: View {
                     Button("Add to Bookshelf"){
                         //Add book to bookshelf todo: save in database
                         myBookshelf.append(book)
-                        print(myBookshelf)
+                        //print(myBookshelf)
                     }
                 }
                 .padding()
