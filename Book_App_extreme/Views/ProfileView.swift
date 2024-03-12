@@ -29,44 +29,33 @@ struct ProfileView: View {
                                 .frame(width: 50, height: 50)
                                 .foregroundColor(.white)
                         )
-                    
                     // Context-menu for image
                         .contextMenu {
                             Button {
                                 avatar = "person"
-                                
                             } label: {
                                 Label("Person", systemImage: "person")
                             }
-                            
                             Button {
                                 avatar = "heart"
-                                
                             } label: {
                                 Label("Heart", systemImage: "heart")
                             }
-                            
                             Button {
                                 avatar = "star"
-                                
                             } label: {
                                 Label("Star", systemImage: "star")
                             }
-                            
                             Button {
                                 avatar = "smiley"
-                                
                             } label: {
                                 Label("Smiley", systemImage: "smiley")
                             }
-                            
                             Button {
                                 avatar = "book"
-                                
                             } label: {
                                 Label("Book", systemImage: "book")
                             }
-                            
                         }
                         .onChange(of: avatar, initial: false) { oldValue, newValue in
                             viewModel.avatarString = newValue
@@ -133,6 +122,7 @@ struct ProfileView: View {
                 if showEdit {
                     Text("Name")
                         .bold()
+                    
                     TextField( "Your name... ", text: $name)
                         .frame(width: 150, height: 40)
                         .border(.gray, width: 1)
@@ -141,7 +131,6 @@ struct ProfileView: View {
                         }
                         .onChange(of: name, initial: false) { oldValue, newValue in
                             viewModel.name = newValue
-                            
                         }
                     
                     Text("About You")
@@ -212,6 +201,7 @@ struct ProfileView: View {
                                 secondaryButton: .cancel()
                             )
                         }
+                    
                     Image(systemName: "exclamationmark.triangle")
                         .foregroundStyle(.red)
                 }
