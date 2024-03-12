@@ -24,6 +24,7 @@ struct SearchBarView: View {
             }
             .pickerStyle(.palette)
             .font(.title2)
+            .foregroundColor(.brown)
             .bold()
             .padding()
             .background(.brown)
@@ -32,11 +33,11 @@ struct SearchBarView: View {
             
             HStack {
                 TextField("Search", text: $searchText)
-                    .padding()
+                    .padding(.horizontal)
+                    .frame(height: 50)
                     .foregroundStyle(.black)
                     .font(.title2)
                     .background(.white)
-                    .textFieldStyle(.roundedBorder)
                     .cornerRadius(10)
                     .onChange(of: searchText, initial: false, { oldValue, newValue in
                         //Någon användning?
@@ -47,20 +48,23 @@ struct SearchBarView: View {
                     
                 }) {
                     Image(systemName: "magnifyingglass")
-                        .padding(10)
-                        .background(.blue)
+                        .padding()
+                        .background(.teal.secondary)
                         .foregroundStyle(.white)
                         .bold()
                         .cornerRadius(10)
                         .shadow(radius: 2)
                 }
             }
-            
+            /* I think it dosen't need to be since Picker shows what we have chosen
+             What do you think? :)
+             
             Text("Category: \(searchFilters[currentIndex].uppercased())")
                 .bold()
                 .font(.title2)
                 .foregroundStyle(.brown)
                 .opacity(0.6)
+            */
         }
         .padding()
     }
