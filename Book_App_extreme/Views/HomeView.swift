@@ -42,15 +42,18 @@ struct HomeView: View {
                         Text("Add bookshelf")
                             .frame(height: 25)
                             .frame(maxWidth: 150)
-                            .cornerRadius(10)
                             .foregroundColor(.white)
                             .bold()
                             .padding(10)
                             .background(.blue)
                             .cornerRadius(10)
-                    })
+                    }) 
+                    .frame(maxHeight: .infinity, alignment: .bottomTrailing)
+                    .padding()
+                    Spacer()
                 }
             }
+            .navigationBarTitle("My Bookshelves", displayMode: .inline)
         }
     }
 }
