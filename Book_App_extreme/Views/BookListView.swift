@@ -10,47 +10,57 @@ import SwiftUI
 struct BookListView: View {
     
     
-    @ObservedObject var bookViewModel: BookListViewViewModel = BookListViewViewModel()
+    @ObservedObject var bookViewModel = BookListViewViewModel.shared
     
-    
-    
-    @State var bookList = [BookItem]()
-    
-    
+    @State var bookShelfIndex: Int
+        
     
     var body: some View {
+        
         ZStack{
             
             LinearGradient(colors: [Color.purple , Color.red], startPoint: .topLeading, endPoint: .bottom)
                 .ignoresSafeArea()
             VStack{
                
-                //kan ändras till var senare om det behövs vid bookViewn
                 
                 
-               List(bookList,id: \.id){ book in
+                List{
+                    
+                    
+                    if let shelfData = bookViewModel.bookshelves?[bookShelfIndex],
+                       let titel = shelfData["titel"] as? String,
+                       let books = shelfData["bookshelf"] as? [BookItem]
+                    {
                         
-                        HStack{
-                            let urlString = book.volumeInfo.imageLinks?.smallThumbnail.absoluteString
+                        ForEach(books,id: \.id){ book in
                             
-                           RemoteImageView(imageUrl: urlString!)
-                                .padding(.trailing, 20)
-                            //Image(systemName: "trash")
-
-                            
-                            
-                            VStack{
-                                Text(book.volumeInfo.title)
-                                    .padding(5)
-                                Text(book.volumeInfo.authors?[0] ?? "No author found ")
-                                    .padding(5)
+                            HStack{
+                                let urlString = book.volumeInfo.imageLinks?.smallThumbnail.absoluteString
+                                
+                                RemoteImageView(imageUrl: urlString!)
+                                    .padding(.trailing, 20)
+                                
+                                
+                                
+                                VStack{
+                                    Text(book.volumeInfo.title)
+                                        .padding(5)
+                                    Text(book.volumeInfo.authors?[0] ?? "No author found ")
+                                        .padding(5)
+                                }
                             }
-                        }
+                            
+                        }.onDelete(perform: { indexSet in
+                            
+                            let bookIndex = indexSet.first
+                            bookViewModel.removeBookFromShelf(shelfTitel: titel, index: bookIndex ?? -1)
+                        })
                         
-                    }.scrollContentBackground(.hidden)
-                
-              
-                
+                        
+                        
+                    }
+                }.scrollContentBackground(.hidden)
             }
             
             

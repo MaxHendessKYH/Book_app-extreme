@@ -12,7 +12,7 @@ import FirebaseAuth
 
 class BookListViewViewModel: ObservableObject{
  
-    
+    static var shared = BookListViewViewModel()
     
     
   
@@ -20,7 +20,6 @@ class BookListViewViewModel: ObservableObject{
     //@Published var bookshelves : [(String, [Books])]? = []
     
     @Published var bookshelves : [[String: Any]]? = []
-    @Published var bookshelfTitels: [Any] = []
     
 
     let db =  Firestore.firestore()
@@ -44,11 +43,9 @@ class BookListViewViewModel: ObservableObject{
         
         bookshelves!.append(["titel": listTitel, "bookshelf": []])
 
-        bookshelfTitels.append(listTitel)
             uppdate()
 
 
-       //print(bookshelfTitels)
     }
     
     func removeList(shelfIndex: Int){
@@ -56,7 +53,6 @@ class BookListViewViewModel: ObservableObject{
         if shelfIndex >= 0{
             
             bookshelves!.remove(at: shelfIndex)
-            bookshelfTitels.remove(at: shelfIndex)
         }
             
         uppdate()
@@ -64,58 +60,51 @@ class BookListViewViewModel: ObservableObject{
     
     
     
-    // sorting stuff was here
     
    
     
-    // Uppdate was here
     
     
    
      
 
-        func uppdate() {
+    func uppdate() {
+        
 
-            var bookshelvesJson : [[String: Any]]? = []
-
-            let encoder = JSONEncoder()
-
-            for bookshelf in self.bookshelves!{
-                
-                let titel = bookshelf["titel"]
-                
-                let bookArray = bookshelf["bookshelf"] as? [BookItem]
-                do {
-                    let jsonData = try encoder.encode(bookArray)
-                    
-                    print("jsonData Here ")
-                    print(jsonData)
-                    
-                    let jsonString = String(data: jsonData, encoding: .utf8)
-                    print("Json here ")
-                    print(jsonString ?? "error encoding")
-                    
-                    bookshelvesJson!.append(["titel": titel!  ,"bookshelf": jsonString! ])
-                    
-                } catch  {
-                    
-                
-                    print("Error encoding [BookItem] to JSON")
-                }
+        var bookshelvesJson : [[String: Any]]? = []
+        
+        let encoder = JSONEncoder()
+        
+        for bookshelf in self.bookshelves!{
+            
+            let titel = bookshelf["titel"]
+            
+            let bookArray = bookshelf["bookshelf"] as? [BookItem]
+            do {
+                let jsonData = try encoder.encode(bookArray)
+                let jsonString = String(data: jsonData, encoding: .utf8)
                 
                 
+                bookshelvesJson!.append(["titel": titel!  ,"bookshelf": jsonString! ])
                 
+            } catch  {
+                
+                
+                print("Error encoding [BookItem] to JSON")
             }
             
             
             
-            
-            
-            db.collection("library")
-                .document(self.userId ?? "path")
-                .setData(["userLibrary": bookshelvesJson ?? []])
-
         }
+        
+        
+        
+        
+        
+        db.collection("library")
+            .document(self.userId ?? "path")
+            .setData(["userLibrary": bookshelvesJson ?? []])
+    }
 
 
         
@@ -146,7 +135,6 @@ class BookListViewViewModel: ObservableObject{
                                        let jsonData = jsonString.data(using: .utf8)
                                    else {return}
                                    
-                                   self.bookshelfTitels.append(titel)
                                    
                                    let bookArray2 = try JSONDecoder().decode([BookItem].self, from: jsonData)
                                    fetchedBookshelves.append(["titel": titel, "bookshelf": bookArray2])
@@ -180,7 +168,9 @@ class BookListViewViewModel: ObservableObject{
     
     func addBookToShelf(shelfTitel: String, book: BookItem){
         
-        let length = self.bookshelves?.count ?? 100 // vad kan står istället för 2?
+
+        
+        let length = self.bookshelves?.count ?? 100 // vad kan står istället för 100?
         for i in 0 ... (length - 1) {
             
             if self.bookshelves?[i]["titel"] as? String == shelfTitel{
@@ -192,9 +182,35 @@ class BookListViewViewModel: ObservableObject{
                 self.bookshelves?[i]["bookshelf"] = bookArray as Any
                 uppdate()
                 
+                
 
             }
         }
+    }
+    
+    func removeBookFromShelf(shelfTitel: String, index: Int){
+        
+        if index >= 0{
+            
+            
+            let length = self.bookshelves?.count ?? 100 // vad kan står istället för 100?
+            for i in 0 ... (length - 1) {
+                
+                if self.bookshelves?[i]["titel"] as? String == shelfTitel{
+                    
+                    var bookArray = self.bookshelves?[i]["bookshelf"] as? [BookItem] ?? []
+                    
+                    bookArray.remove(at: index)
+                    
+                    self.bookshelves?[i]["bookshelf"] = bookArray as Any
+
+                                        
+                    
+                }
+            }
+        }
+        uppdate()
+
     }
     
     
@@ -350,6 +366,18 @@ class BookListViewViewModel: ObservableObject{
      }
  }
  
+ 
+ 
+ func countNumberOfBooks(){
+     
+     for shelf in self.bookshelves!{
+         
+         
+         let books = shelf["bookshelf"] as? [BookItem]
+         let count = books!.count
+         print(count)
+     }
+ }
  
  
  

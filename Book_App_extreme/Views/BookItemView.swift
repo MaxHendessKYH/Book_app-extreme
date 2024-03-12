@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct BookItemView: View {
-    @ObservedObject var viewModel = BookListViewViewModel()
+    @ObservedObject var viewModel = BookListViewViewModel.shared
     @State var bookItem: BookItem
-    //@State var titleList: [String] = ["Button1", "Button2", "Button3", "My name is Ali"]
     @State private var isMenuVisible = false
     
 
@@ -35,22 +34,28 @@ struct BookItemView: View {
                 .overlay(
                 
                     MenuView(isVisible: $isMenuVisible) {
-                        ForEach(viewModel.bookshelfTitels as? [String] ?? ["not found", "Not Found"], id: \.self) { shelf in
-                               Button(action: {
-                                   // Handle button action if needed
-                                   //print("Selected shelf: \(shelf)")
-                                   isMenuVisible.toggle()
-                                   viewModel.addBookToShelf(shelfTitel: shelf, book: bookItem)
-                                   
-                                   
-                                   
-                               }) {
-                                   Text(shelf)
-                               }
+                        //ForEach(viewModel.bookshelfTitels as? [String] ?? ["not found", "Not Found"], id: \.self) { shelf in
                             
-                              //.zIndex(1.0)
-                               
-                           }
+                        ForEach( viewModel.bookshelves!.indices, id: \.self) { index in
+                            
+                            if let shelfData = viewModel.bookshelves?[index],
+                               let titel = shelfData["titel"] as? String{
+                                
+                                Button(action: {
+                                    
+                                    isMenuVisible.toggle()
+                                    viewModel.addBookToShelf(shelfTitel: titel , book: bookItem)
+                                    
+                                    
+                                    
+                                }) {
+                                    Text(titel)
+                                }
+                                
+                                //.zIndex(1.0)
+                                
+                            }
+                        }
                        }
                 
                 
@@ -140,27 +145,3 @@ struct MenuView<Content: View>: View {
     }
 }
 
-/*
-    .overlay(
-    
-        MenuView(isVisible: $isMenuVisible) {
-            ForEach(viewModel.bookshelfTitels as? [String] ?? [], id: \.self) { shelf in
-                   Button(action: {
-                       // Handle button action if needed
-                       print("Selected shelf: \(shelf)")
-                       isMenuVisible.toggle()
-                   }) {
-                       Text(shelf)
-                   }
-                
-                  //.zIndex(1.0)
-                   
-               }
-           }
-    
-    
-    
-        //alignment: .bottom
-    
-    )
-*/
