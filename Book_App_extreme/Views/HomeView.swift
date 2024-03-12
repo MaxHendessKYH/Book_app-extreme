@@ -29,7 +29,7 @@ struct HomeView: View {
                 List{
                     
                     
-                    ForEach(viewModel.bookshelves!.indices, id: \.self){ index in
+                    ForEach(viewModel.bookshelves!.indices, id: \.self){    index in
                         
                         
                         if let shelfData = viewModel.bookshelves?[index],
