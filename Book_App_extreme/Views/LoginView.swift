@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct LoginView: View {
+    // ViewModel to handle login logic
     @StateObject var viewModel = LoginViewViewModel()
     
     var body: some View {
         NavigationView{
             VStack{
-                
+                // Form for login input fields and login button
                 Form{
-                    
+                    // Display error message if any
                     if !viewModel.errorMessage.isEmpty {
                         Text(viewModel.errorMessage)
                             .foregroundColor(Color.red)
@@ -49,7 +50,7 @@ struct LoginView: View {
                 
                 
                 
-                
+                // Navigation link to register view
                 VStack{
                     Text("New around here?")
                         // Show Registeration

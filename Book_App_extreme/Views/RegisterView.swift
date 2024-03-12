@@ -10,6 +10,7 @@ import SwiftUI
 
 struct RegisterView: View {
     
+    // Create an instance of RegisterViewViewModel
     @StateObject var viewModel = RegisterViewViewModel()
        
         var body: some View {
@@ -46,7 +47,7 @@ struct RegisterView: View {
                 .padding(.bottom)
                 
                 Form{
-                    
+                    // Form section for user input fields and registration
                     TextField("Full Name", text: $viewModel.name)
                         .textFieldStyle(DefaultTextFieldStyle())
                         .autocorrectionDisabled()
@@ -76,6 +77,7 @@ struct RegisterView: View {
                             })
                         
                         }
+                    // Display error message if any
                     if !viewModel.errorMessage.isEmpty {
                         Text(viewModel.errorMessage)
                             .foregroundColor(Color.red)
