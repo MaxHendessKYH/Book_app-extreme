@@ -14,9 +14,10 @@ struct ProfileView: View {
     
     var body: some View {
         ScrollView {
+            // Overall Vstack for profile except save- and delete-button
             VStack {
+                // HStack for edit and log out
                 HStack {
-                    
                     // Edit
                     Button(action: {
                         showEdit.toggle()
@@ -41,6 +42,8 @@ struct ProfileView: View {
                             .cornerRadius(5)
                     }
                 }
+                
+                // HStack for top info (image and info)
                 HStack {
                     Circle()
                         .frame(width: 100, height: 100, alignment: .top)
@@ -87,6 +90,7 @@ struct ProfileView: View {
                         }
                     Spacer()
                     
+                    // Vstack for displaying top info
                     VStack {
                         if viewModel.hasFetchedName {
                             Text(viewModel.name ?? name)
@@ -105,7 +109,7 @@ struct ProfileView: View {
                     }
                 }
                 
-                // Displaying info
+                // Vstack for Displaying info about user
                 VStack {
                     Text("About \(viewModel.name ?? name)")
                         .padding(30)
@@ -133,6 +137,8 @@ struct ProfileView: View {
                     viewModel.getUserRegistrationDate()
                     viewModel.getUserPresentation()
                 }
+                
+                // VStack on edit-fields
                 VStack {
                     // Hidden edit-fields
                     if showEdit {
@@ -167,7 +173,7 @@ struct ProfileView: View {
             }
             .padding(20)
             
-            // Saving
+            // Save data
             Button(action: {
                 viewModel.overwriteName(nameString: name)
                 viewModel.overwritePresentationText(presentationText: presentationText)
@@ -200,7 +206,8 @@ struct ProfileView: View {
                         .cornerRadius(5)
                         .padding()
                         .alert(isPresented: $showWarning) {
-                            // Bekräftelsedialogruta
+                            
+                            // Alert-dialogue
                             Alert(
                                 title: Text("Warning"),
                                 message: Text("This will delete your account and all saved data. Are you sure you want to proceed?"),
