@@ -14,7 +14,7 @@ struct BookItemView: View {
     @State private var rating: Int = 0
     @State private var reviewText: String = ""
     @State var text: String = ""
-    @StateObject var viewModel : BookItemViewViewModel
+    @StateObject var viewModelRatings : BookItemViewViewModel
     @State private var isMenuVisible = false
     var body: some View {
         NavigationView {
@@ -45,7 +45,7 @@ struct BookItemView: View {
                 
                 
                     Button("Done") {
-                        viewModel.addReviewAndSave(review: reviewText, star: rating)
+                        viewModelRatings.addReviewAndSave(review: reviewText, star: rating)
                         isRatingMode.toggle()
                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     }
@@ -56,7 +56,7 @@ struct BookItemView: View {
                 } else {
                     Button("Rate/Review") {
                         isRatingMode.toggle()
-                        viewModel.fetchReviews { reviews in
+                        viewModelRatings.fetchReviews { reviews in
                             if let reviews = reviews {
                                 for review in reviews {
                                     print("Review ID: \(review.id), Star: \(review.star), Comment: \(review.comment)")
@@ -155,7 +155,7 @@ extension BookItemView {
         let jsonData = jsonString.data(using: .utf8)!
         var volumeInfo = try! JSONDecoder().decode(VolumeInfo.self, from: jsonData)
         let bookitem = BookItem(id: "1", volumeInfo: volumeInfo)
-        self.init(bookItem: bookitem,viewModel:BookItemViewViewModel(bookItem: bookitem))
+        self.init(bookItem: bookitem,viewModelRatings:BookItemViewViewModel(bookItem: bookitem))
     }
 }
 
