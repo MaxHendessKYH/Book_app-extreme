@@ -33,7 +33,7 @@ struct SearchView: View {
                 // show books from api
                 ForEach(apiBooks, id: \.id){book in
                     NavigationLink{
-                        BookItemView(bookItem: book,viewModel:BookItemViewViewModel(bookItem: book))
+                        BookItemView(bookItem: book,viewModel2:BookItemViewViewModel(bookItem: book))
                     } label: {
                         Text(book.volumeInfo.title)
                     }
