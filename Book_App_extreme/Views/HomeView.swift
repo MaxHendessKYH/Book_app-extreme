@@ -14,29 +14,40 @@ struct HomeView: View {
     var body: some View {
         NavigationView{
             VStack{
-                NavigationLink{
-                    AddBookShelfView(viewModel: viewModel)
-                }label :{
-                    Image(systemName: "plus")
-                }
-                List{
-                    ForEach(viewModel.bookshelves!.indices, id: \.self){index in
-                        if let shelfData = viewModel.bookshelves?[index],
-                           let titel = shelfData["titel"] as? String
-                           //let books = shelfData["bookshelf"] as? [BookItem]
-                           {
-                            NavigationLink{
-                                BookListView(bookShelfIndex: index)
-                            }label :{
-                                HStack{
-                                    Image(systemName: "books.vertical") 
-                                    Text(titel)
+                ZStack {
+                    List{
+                        ForEach(viewModel.bookshelves!.indices, id: \.self){index in
+                            if let shelfData = viewModel.bookshelves?[index],
+                               let titel = shelfData["titel"] as? String
+                               //let books = shelfData["bookshelf"] as? [BookItem]
+                               {
+                                NavigationLink{
+                                    BookListView(bookShelfIndex: index)
+                                }label :{
+                                    HStack{
+                                        Image(systemName: "books.vertical")
+                                        Text(titel)
+                                    }
                                 }
                             }
-                        }
-                    }.onDelete(perform: { indexSet in
-                        let shelfIndex = indexSet.first
-                        viewModel.removeList(shelfIndex: shelfIndex ??  -1) 
+                        }.onDelete(perform: { indexSet in
+                            let shelfIndex = indexSet.first
+                            viewModel.removeList(shelfIndex: shelfIndex ??  -1)
+                        })
+                    }
+                    
+                    NavigationLink (
+                    destination: AddBookShelfView(viewModel: viewModel),
+                    label: {
+                        Text("Add bookshelf")
+                            .frame(height: 25)
+                            .frame(maxWidth: 150)
+                            .cornerRadius(10)
+                            .foregroundColor(.white)
+                            .bold()
+                            .padding(10)
+                            .background(.blue)
+                            .cornerRadius(10)
                     })
                 }
             }
