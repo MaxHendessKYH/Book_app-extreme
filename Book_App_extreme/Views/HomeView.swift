@@ -60,13 +60,12 @@ struct HomeView: View {
                             .cornerRadius(10)
                     })
                 }
-                /*Ska vi radera detta??
-                 
+                // Behöver vi behålla den?
                 Text("Hello it is me")
                       .onTapGesture {
                 print(viewModel.bookshelves!)
                 }
-               */
+
                 
             }
         }
