@@ -9,9 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var viewModel = BookListViewViewModel()
-    
     @State var newTitel: String = ""
-   /* var maxBook = BookItem(id: "ff", volumeInfo: VolumeInfo(title: "Harry Potter", authors: ["Unknown"], description: "an interresting book", publishedDate: "Today", categories: ["Unknown"], pageCount: 233, language: "English"))*/
     
     var body: some View {
         NavigationView{
@@ -36,13 +34,13 @@ struct HomeView: View {
                         
                         if let shelfData = viewModel.bookshelves?[index],
                            let titel = shelfData["titel"] as? String,
-                           let books = shelfData["bookshelf"] as? [Books]
+                           let books = shelfData["bookshelf"] as? [BookItem]
                            {
                             
-                            
-                           // print(books)
+                           
                             
                             NavigationLink{
+                                
                                 
                                 BookListView(bookViewModel: viewModel, bookList: books)
                                 
@@ -55,8 +53,14 @@ struct HomeView: View {
                                     
                                 }
                             }
+                            // testing
+                            Button("print my content"){
+                                
+                                //print(books)
+                                print(books.count)
+                            }
                             
-                            
+                           
                             
                             
                         }
@@ -79,7 +83,7 @@ struct HomeView: View {
                 
                 Text("Hello it is me")
                     .onTapGesture {
-                        print(viewModel.bookshelves!)
+                        //print(viewModel.bookshelves!)
                     }
             }
         }
@@ -90,6 +94,7 @@ struct HomeView: View {
 #Preview {
     HomeView()
 }
+ 
 
 /*
  List{
@@ -116,3 +121,5 @@ struct HomeView: View {
  }
 
  */
+
+/* var maxBook = BookItem(id: "ff", volumeInfo: VolumeInfo(title: "Harry Potter", authors: ["Unknown"], description: "an interresting book", publishedDate: "Today", categories: ["Unknown"], pageCount: 233, language: "English"))*/

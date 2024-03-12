@@ -4,11 +4,16 @@
 //
 //  Created by Mehdi on 2024-02-27.
 //
-
+// ToDO = Solve the issue with the revealing buttons 
 import SwiftUI
 
 struct BookItemView: View {
+    @ObservedObject var viewModel = BookListViewViewModel()
     @State var bookItem: BookItem
+    //@State var titleList: [String] = ["Button1", "Button2", "Button3", "My name is Ali"]
+    @State private var isMenuVisible = false
+    
+
     var body: some View {
         NavigationView {
             VStack {
@@ -23,7 +28,36 @@ struct BookItemView: View {
                 Text(bookItem.volumeInfo.authors?[0] ?? "")
                     Divider()
                 Button("Add to Bookshelf") {
+                    
+                    isMenuVisible.toggle()
                 }
+                .frame(width: 500)
+                .overlay(
+                
+                    MenuView(isVisible: $isMenuVisible) {
+                        ForEach(viewModel.bookshelfTitels as? [String] ?? ["not found", "Not Found"], id: \.self) { shelf in
+                               Button(action: {
+                                   // Handle button action if needed
+                                   //print("Selected shelf: \(shelf)")
+                                   isMenuVisible.toggle()
+                                   viewModel.addBookToShelf(shelfTitel: shelf, book: bookItem)
+                                   
+                                   
+                                   
+                               }) {
+                                   Text(shelf)
+                               }
+                            
+                              //.zIndex(1.0)
+                               
+                           }
+                       }
+                
+                
+                
+                    //alignment: .bottom
+                
+                )
             
                 Divider()
                 Text(bookItem.volumeInfo.description ?? "")
@@ -72,3 +106,61 @@ extension BookItemView {
     BookItemView()
 }
 
+
+
+struct MenuView<Content: View>: View {
+    @Binding var isVisible: Bool
+    var content: Content
+
+    init(isVisible: Binding<Bool>, @ViewBuilder content: () -> Content) {
+        self._isVisible = isVisible
+        self.content = content()
+    }
+
+    var body: some View {
+        if isVisible {
+            ZStack {
+                Rectangle()
+                    .fill(Color.clear)
+                    .onTapGesture {
+                        isVisible = false
+                    }
+                VStack {
+                    content
+                        .padding()
+                        .foregroundColor(.black)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                        .shadow(radius: 5)
+                    Spacer()
+                }
+            }
+            .edgesIgnoringSafeArea(.all)
+        }
+    }
+}
+
+/*
+    .overlay(
+    
+        MenuView(isVisible: $isMenuVisible) {
+            ForEach(viewModel.bookshelfTitels as? [String] ?? [], id: \.self) { shelf in
+                   Button(action: {
+                       // Handle button action if needed
+                       print("Selected shelf: \(shelf)")
+                       isMenuVisible.toggle()
+                   }) {
+                       Text(shelf)
+                   }
+                
+                  //.zIndex(1.0)
+                   
+               }
+           }
+    
+    
+    
+        //alignment: .bottom
+    
+    )
+*/

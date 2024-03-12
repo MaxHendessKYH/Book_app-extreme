@@ -14,13 +14,9 @@ struct BookListView: View {
     
     
     
-    @State var bookList: [Books] = [Books(titel: "Harry Potter", author: "me"),
-                                    
-                                    Books(titel: "BAliBAli", author: "it is me"),
-                                    
-                                    Books(titel: "AliAliAli", author: "Ali Alhasan"),
-                                    
-                                    Books(titel: "AAAA", author: "me too")]
+    @State var bookList = [BookItem]()
+    
+    
     
     var body: some View {
         ZStack{
@@ -29,29 +25,31 @@ struct BookListView: View {
                 .ignoresSafeArea()
             VStack{
                
-                // kan ändras till var senare om det behövs vid bookViewn 
-                let sortedList = bookViewModel.sortshelf(unSortedList: bookList)                 
-                List(sortedList,id: \.id){ book in
+                //kan ändras till var senare om det behövs vid bookViewn
+                
+                
+               List(bookList,id: \.id){ book in
                         
                         HStack{
-                            Image(systemName: "trash")
+                            let urlString = book.volumeInfo.imageLinks?.smallThumbnail.absoluteString
+                            
+                           RemoteImageView(imageUrl: urlString!)
                                 .padding(.trailing, 20)
-                            /*
-                             AsyncImage(url: URL(string: viewModel.imageUrl))
-                             */
+                            //Image(systemName: "trash")
+
+                            
                             
                             VStack{
-                                Text(book.titel)
+                                Text(book.volumeInfo.title)
                                     .padding(5)
-                                Text(book.author)
+                                Text(book.volumeInfo.authors?[0] ?? "No author found ")
                                     .padding(5)
                             }
                         }
                         
                     }.scrollContentBackground(.hidden)
                 
-                
-               
+              
                 
             }
             
@@ -66,6 +64,8 @@ struct BookListView: View {
 
 
 
-#Preview {
-    BookListView()
-}
+/*
+ #Preview {
+ BookListView()
+ }
+ */
