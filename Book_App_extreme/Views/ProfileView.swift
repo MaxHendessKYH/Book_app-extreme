@@ -15,10 +15,33 @@ struct ProfileView: View {
     var body: some View {
         ScrollView {
             VStack {
-                Text("Your Profile")
-                    .font(.largeTitle)
-                    .bold()
-                VStack {
+                HStack {
+                    
+                    // Edit
+                    Button(action: {
+                        showEdit.toggle()
+                    }) {
+                        Image(systemName: showEdit ? "pencil.circle.fill" : "pencil.circle")
+                            .foregroundStyle(showEdit ? .blue : .gray)
+                            .font(.system(size: 30))
+                        
+                        Text("Edit")
+                    }
+                    Spacer()
+                    
+                    // Log out
+                    Button(action: {
+                        viewModel.userLogOut()
+                    }) {
+                        Text("Log out")
+                            .foregroundColor(.white)
+                            .bold()
+                            .padding(5)
+                            .background(.pink)
+                            .cornerRadius(5)
+                    }
+                }
+                HStack {
                     Circle()
                         .frame(width: 100, height: 100, alignment: .top)
                         .foregroundStyle(avatarColor(avatar: viewModel.avatarString ?? ""))
@@ -59,37 +82,35 @@ struct ProfileView: View {
                         }
                         .onChange(of: avatar, initial: false) { oldValue, newValue in
                             viewModel.avatarString = newValue
+                        }.onAppear {
+                            viewModel.getUserAvatar()
                         }
-                } .onAppear {
-                    viewModel.getUserAvatar()
+                    Spacer()
+                    
+                    VStack {
+                        if viewModel.hasFetchedName {
+                            Text(viewModel.name ?? name)
+                                .bold()
+                                .font(.title2)
+                        }
+                        if viewModel.hasFetchedMail {
+                            Text(viewModel.mail ?? mail)
+                                .font(.title3)
+                            
+                        }
+                        if viewModel.hasFetchedDate {
+                            Text("Registered: \(viewModel.registrationDate ?? date)")
+                                .font(.title3)
+                        }
+                    }
                 }
                 
                 // Displaying info
                 VStack {
-                    if viewModel.hasFetchedName {
-                        Text("Welcome,  \(viewModel.name ?? name)")
-                            .bold()
-                            .font(.title2)
-                            .padding()
-                    } else {
-                        Text("Welcome, \(name)")
-                            .bold()
-                            .font(.title2)
-                            .padding()
-                    }
-                    if viewModel.hasFetchedMail {
-                        Text("Mail: \t\(viewModel.mail ?? mail)")
-                            .bold()
-                            .font(.title3)
-                    }
-                    if viewModel.hasFetchedDate {
-                        Text("User since: \t \(viewModel.registrationDate ?? date)")
-                            .bold()
-                            .font(.title3)
-                    }
-                    Text("About me".uppercased())
-                        .padding(5)
+                    Text("About \(viewModel.name ?? name)")
+                        .padding(30)
                         .font(.title3)
+                        .bold()
                     
                     VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, content: {
                         if viewModel.hasFetchedPresentation {
@@ -100,7 +121,7 @@ struct ProfileView: View {
                                 .foregroundStyle(.indigo)
                         } else {
                             Text(presentationText)
-                                .font(.system(size: 16))
+                                .font(.system(size: 20))
                                 .bold()
                                 .italic()
                                 .foregroundStyle(.indigo)
@@ -112,40 +133,37 @@ struct ProfileView: View {
                     viewModel.getUserRegistrationDate()
                     viewModel.getUserPresentation()
                 }
+                VStack {
+                    // Hidden edit-fields
+                    if showEdit {
+                        Text("Name")
+                            .bold()
+                        
+                        TextField( "Your name... ", text: $name)
+                            .frame(width: 150, height: 40)
+                            .border(.gray, width: 1)
+                            .onAppear {
+                                name = viewModel.name ?? "NoName"
+                            }
+                            .onChange(of: name, initial: false) { oldValue, newValue in
+                                viewModel.name = newValue
+                            }
+                        
+                        Text("About You")
+                            .bold()
+                        
+                        TextEditor(text: $presentationText)
+                            .border(.gray, width: 1)
+                            .frame(height: 70)
+                            .onAppear {
+                                presentationText = viewModel.presentation ?? "NoPresentation"
+                            }
+                            .onChange(of: presentationText, initial: false) { oldValue, newValue in
+                                viewModel.presentation = newValue
+                            }
+                    }
+                } .padding()
                 
-                Button(showEdit ? "Hide edit" : "Show edit") {
-                    showEdit.toggle()
-                }
-                .padding(5)
-                
-                // Hidden edit-fields
-                if showEdit {
-                    Text("Name")
-                        .bold()
-                    
-                    TextField( "Your name... ", text: $name)
-                        .frame(width: 150, height: 40)
-                        .border(.gray, width: 1)
-                        .onAppear {
-                            name = viewModel.name ?? "NoName"
-                        }
-                        .onChange(of: name, initial: false) { oldValue, newValue in
-                            viewModel.name = newValue
-                        }
-                    
-                    Text("About You")
-                        .bold()
-                    
-                    TextEditor(text: $presentationText)
-                        .border(.gray, width: 1)
-                        .frame(height: 70)
-                        .onAppear {
-                            presentationText = viewModel.presentation ?? "NoPresentation"
-                        }
-                        .onChange(of: presentationText, initial: false) { oldValue, newValue in
-                            viewModel.presentation = newValue
-                        }
-                }
             }
             .padding(20)
             
@@ -156,23 +174,11 @@ struct ProfileView: View {
                 viewModel.overwriteAvatarString(avatar: avatar)
                 showEdit.toggle()
             }) {
-                Text("Save Changes")
+                Text("Save")
                     .foregroundColor(.white)
                     .bold()
                     .padding(5)
                     .background(.green)
-                    .cornerRadius(5)
-            }
-            
-            // Log out
-            Button(action: {
-                viewModel.userLogOut()
-            }) {
-                Text("Log out")
-                    .foregroundColor(.white)
-                    .bold()
-                    .padding(5)
-                    .background(.orange)
                     .cornerRadius(5)
             }
             
@@ -182,6 +188,10 @@ struct ProfileView: View {
                     showWarning = true
                     
                 }) {
+                    Image(systemName: "exclamationmark.triangle")
+                        .foregroundStyle(.red)
+                        .font(.system(size: 30))
+                    
                     Text("Delete account")
                         .foregroundColor(.white)
                         .bold()
@@ -193,7 +203,7 @@ struct ProfileView: View {
                             // Bekräftelsedialogruta
                             Alert(
                                 title: Text("Warning"),
-                                message: Text("Delete account?"),
+                                message: Text("This will delete your account and all saved data. Are you sure you want to proceed?"),
                                 primaryButton: .destructive(Text("Delete")) {
                                     viewModel.deleteDocumentsForUser()
                                     viewModel.deleteUser()
@@ -201,9 +211,6 @@ struct ProfileView: View {
                                 secondaryButton: .cancel()
                             )
                         }
-                    
-                    Image(systemName: "exclamationmark.triangle")
-                        .foregroundStyle(.red)
                 }
             }
         }
