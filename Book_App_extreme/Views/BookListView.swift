@@ -10,49 +10,57 @@ import SwiftUI
 struct BookListView: View {
     
     
-    @ObservedObject var bookViewModel: BookListViewViewModel = BookListViewViewModel()
+    @ObservedObject var bookViewModel = BookListViewViewModel.shared
     
-    
-    
-    @State var bookList: [Books] = [Books(titel: "Harry Potter", author: "me"),
-                                    
-                                    Books(titel: "BAliBAli", author: "it is me"),
-                                    
-                                    Books(titel: "AliAliAli", author: "Ali Alhasan"),
-                                    
-                                    Books(titel: "AAAA", author: "me too")]
+    @State var bookShelfIndex: Int
+        
     
     var body: some View {
+        
         ZStack{
             
             LinearGradient(colors: [Color.purple , Color.red], startPoint: .topLeading, endPoint: .bottom)
                 .ignoresSafeArea()
             VStack{
                
-                // kan ändras till var senare om det behövs vid bookViewn 
-                let sortedList = bookViewModel.sortshelf(unSortedList: bookList)                 
-                List(sortedList,id: \.id){ book in
+                
+                
+                List{
+                    
+                    
+                    if let shelfData = bookViewModel.bookshelves?[bookShelfIndex],
+                       let titel = shelfData["titel"] as? String,
+                       let books = shelfData["bookshelf"] as? [BookItem]
+                    {
                         
-                        HStack{
-                            Image(systemName: "trash")
-                                .padding(.trailing, 20)
-                            /*
-                             AsyncImage(url: URL(string: viewModel.imageUrl))
-                             */
+                        ForEach(books,id: \.id){ book in
                             
-                            VStack{
-                                Text(book.titel)
-                                    .padding(5)
-                                Text(book.author)
-                                    .padding(5)
+                            HStack{
+                                let urlString = book.volumeInfo.imageLinks?.smallThumbnail.absoluteString
+                                
+                                RemoteImageView(imageUrl: urlString!)
+                                    .padding(.trailing, 20)
+                                
+                                
+                                
+                                VStack{
+                                    Text(book.volumeInfo.title)
+                                        .padding(5)
+                                    Text(book.volumeInfo.authors?[0] ?? "No author found ")
+                                        .padding(5)
+                                }
                             }
-                        }
+                            
+                        }.onDelete(perform: { indexSet in
+                            
+                            let bookIndex = indexSet.first
+                            bookViewModel.removeBookFromShelf(shelfTitel: titel, index: bookIndex ?? -1)
+                        })
                         
-                    }.scrollContentBackground(.hidden)
-                
-                
-               
-                
+                        
+                        
+                    }
+                }.scrollContentBackground(.hidden)
             }
             
             
@@ -66,6 +74,8 @@ struct BookListView: View {
 
 
 
-#Preview {
-    BookListView()
-}
+/*
+ #Preview {
+ BookListView()
+ }
+ */

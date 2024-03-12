@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
-    @ObservedObject var viewModel = BookListViewViewModel()
-    
+    @ObservedObject var viewModel = BookListViewViewModel.shared
     @State var newTitel: String = ""
-   /* var maxBook = BookItem(id: "ff", volumeInfo: VolumeInfo(title: "Harry Potter", authors: ["Unknown"], description: "an interresting book", publishedDate: "Today", categories: ["Unknown"], pageCount: 233, language: "English"))*/
     
     var body: some View {
         NavigationView{
@@ -35,16 +33,18 @@ struct HomeView: View {
                         
                         
                         if let shelfData = viewModel.bookshelves?[index],
-                           let titel = shelfData["titel"] as? String,
-                           let books = shelfData["bookshelf"] as? [Books]
+                           let titel = shelfData["titel"] as? String
+                           //let books = shelfData["bookshelf"] as? [BookItem]
                            {
                             
-                            
-                           // print(books)
+                           
                             
                             NavigationLink{
                                 
-                                BookListView(bookViewModel: viewModel, bookList: books)
+                                
+                                
+                                BookListView(bookShelfIndex: index)
+
                                 
                             }label :{
                                 
@@ -57,6 +57,7 @@ struct HomeView: View {
                             }
                             
                             
+                           
                             
                             
                         }
@@ -79,7 +80,12 @@ struct HomeView: View {
                 
                 Text("Hello it is me")
                     .onTapGesture {
-                        print(viewModel.bookshelves!)
+                        for shelf in viewModel.bookshelves!{
+                            
+                            let books = shelf["bookshelf"] as? [BookItem]
+                            let count = books!.count
+                            print(count)
+                        }
                     }
             }
         }
@@ -90,29 +96,5 @@ struct HomeView: View {
 #Preview {
     HomeView()
 }
+ 
 
-/*
- List{
-     
-     
-     ForEach(viewModel.bookshelves!.indices, id: \.self){ index in
-         
-         let (titel, _books) = viewModel.bookshelves![index]
-         
-         HStack{
-             Image(systemName: "books.vertical")
-             Text(titel)
-             
-         }
-         
-         
-     }.onDelete(perform: { indexSet in
-         let shelfIndex = indexSet.first
-         
-         viewModel.removeList(shelfIndex: shelfIndex ??  -1)
-     })
-     
-     
- }
-
- */
