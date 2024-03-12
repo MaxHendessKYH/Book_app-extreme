@@ -14,7 +14,6 @@ struct HomeView: View {
     var body: some View {
         NavigationView{
             VStack{
-                ZStack {
                     List{
                         ForEach(viewModel.bookshelves!.indices, id: \.self){index in
                             if let shelfData = viewModel.bookshelves?[index],
@@ -35,25 +34,10 @@ struct HomeView: View {
                             viewModel.removeList(shelfIndex: shelfIndex ??  -1)
                         })
                     }
-                    
-                    NavigationLink (
-                    destination: AddBookShelfView(viewModel: viewModel),
-                    label: {
-                        Text("Add bookshelf")
-                            .frame(height: 25)
-                            .frame(maxWidth: 150)
-                            .foregroundColor(.white)
-                            .bold()
-                            .padding(10)
-                            .background(.blue)
-                            .cornerRadius(10)
-                    }) 
-                    .frame(maxHeight: .infinity, alignment: .bottomTrailing)
-                    .padding()
-                    Spacer()
-                }
             }
-            .navigationBarTitle("My Bookshelves", displayMode: .inline)
+            .navigationTitle("My Bookshelf")
+            .navigationBarItems(trailing: NavigationLink("Add", destination: AddBookShelfView(viewModel: viewModel))
+            )
         }
     }
 }
