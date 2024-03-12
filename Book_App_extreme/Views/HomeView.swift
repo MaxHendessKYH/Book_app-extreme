@@ -78,15 +78,7 @@ struct HomeView: View {
                 
                 
                 
-                Text("Hello it is me")
-                    .onTapGesture {
-                        for shelf in viewModel.bookshelves!{
-                            
-                            let books = shelf["bookshelf"] as? [BookItem]
-                            let count = books!.count
-                            print(count)
-                        }
-                    }
+              
             }
         }
     }
