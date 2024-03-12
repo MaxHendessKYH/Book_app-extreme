@@ -41,7 +41,7 @@ struct SearchView: View {
                     Button("Add to Bookshelf"){
                         //Add book to bookshelf todo: save in database
                         myBookshelf.append(book)
-                        print(myBookshelf)
+                        //print(myBookshelf)
                     }
                 }
                 .padding()

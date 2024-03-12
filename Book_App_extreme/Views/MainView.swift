@@ -9,19 +9,24 @@ import SwiftUI
 
 struct MainView: View {
     
+    // ViewModel to manage the main screen logic
     @StateObject var viewModel = MainViewViewModel()
     
     var body: some View {
+        // Check if user is signed in and has a valid user ID
         if viewModel.isSignedIn, !viewModel.currentUserId.isEmpty {
-            // Signed in
+            // If signed in, show the account view
             accountView
         } else {
+            // If not signed in, show the login view
             LoginView()
         }
     }
     
+    // View for the account when user is signed in
     @ViewBuilder
-    var accountView: some View{
+    var accountView: some View {
+        // TabView for the home, search, and profile views
         TabView {
             HomeView()
                 .tabItem {

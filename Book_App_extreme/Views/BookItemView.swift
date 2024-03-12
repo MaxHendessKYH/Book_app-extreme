@@ -1,13 +1,21 @@
+//  NewBookItemView.swift
+//  Book_App_extreme
+//
+//  Created by Mehdi on 2024-02-27.
+//
+// ToDO = Solve the issue with the revealing buttons 
+
 import SwiftUI
 
 struct BookItemView: View {
+    @ObservedObject var viewModel = BookListViewViewModel.shared
     @State var bookItem: BookItem
     @State private var isRatingMode = false
     @State private var rating: Int = 0
     @State private var reviewText: String = ""
     @State var text: String = ""
     @StateObject var viewModel : BookItemViewViewModel
-    
+    @State private var isMenuVisible = false
     var body: some View {
         NavigationView {
             VStack {
@@ -63,10 +71,42 @@ struct BookItemView: View {
                     .cornerRadius(5)
                 }
                 
-                Button("Add to Bookshelf") {
-                    // Handle add to bookshelf action
+                Button("Add to Bookshelf") {   
+                    isMenuVisible.toggle()
                 }
+                .frame(width: 500)
+                .overlay(
                 
+                    MenuView(isVisible: $isMenuVisible) {
+                        //ForEach(viewModel.bookshelfTitels as? [String] ?? ["not found", "Not Found"], id: \.self) { shelf in
+                            
+                        ForEach( viewModel.bookshelves!.indices, id: \.self) { index in
+                            
+                            if let shelfData = viewModel.bookshelves?[index],
+                               let titel = shelfData["titel"] as? String{
+                                
+                                Button(action: {
+                                    
+                                    isMenuVisible.toggle()
+                                    viewModel.addBookToShelf(shelfTitel: titel , book: bookItem)
+                                    
+                                    
+                                    
+                                }) {
+                                    Text(titel)
+                                }
+                                
+                                //.zIndex(1.0)
+                                
+                            }
+                        }
+                       }
+                
+                
+                
+                    //alignment: .bottom
+                
+                )
                 Divider()
                 Text(bookItem.volumeInfo.description ?? "")
                     .padding()
@@ -122,5 +162,36 @@ extension BookItemView {
 struct BookItemView_Previews: PreviewProvider {
     static var previews: some View {
         BookItemView()
+    }
+}
+struct MenuView<Content: View>: View {
+    @Binding var isVisible: Bool
+    var content: Content
+
+    init(isVisible: Binding<Bool>, @ViewBuilder content: () -> Content) {
+        self._isVisible = isVisible
+        self.content = content()
+    }
+
+    var body: some View {
+        if isVisible {
+            ZStack {
+                Rectangle()
+                    .fill(Color.clear)
+                    .onTapGesture {
+                        isVisible = false
+                    }
+                VStack {
+                    content
+                        .padding()
+                        .foregroundColor(.black)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                        .shadow(radius: 5)
+                    Spacer()
+                }
+            }
+            .edgesIgnoringSafeArea(.all)
+        }
     }
 }

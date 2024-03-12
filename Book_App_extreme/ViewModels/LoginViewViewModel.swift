@@ -17,17 +17,20 @@ class LoginViewViewModel: ObservableObject{
         
     }
     
+    // Function to handle user login
     func login() {
         guard validate() else {
             return
         }
         
-        // Try log in
+        // Attempt login with provided credentials
         Auth.auth().signIn(withEmail: email, password: password)
     }
     
+    // Function to validate user input
     private func validate() -> Bool {
         errorMessage = ""
+        // Check if email and password fields are not empty
         guard !email.trimmingCharacters(in: .whitespaces).isEmpty,
               !password.trimmingCharacters(in: .whitespaces).isEmpty else {
             
@@ -41,6 +44,6 @@ class LoginViewViewModel: ObservableObject{
             return false
         }
         return true
-    }
+    } 
 }
 
