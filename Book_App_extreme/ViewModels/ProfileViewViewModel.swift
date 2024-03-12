@@ -192,12 +192,10 @@ class ProfileViewViewModel: ObservableObject {
     func deleteDocumentsForUser() {
         if let user = Auth.auth().currentUser {
             let firestore = Firestore.firestore()
-            let userBooks = firestore.collection("books").document(user.uid)
             let userLibrary = firestore.collection("library").document(user.uid)
             let presentationDocument = firestore.collection("userPresentation").document(user.uid)
             let imageDocument = firestore.collection("userAvatar").document(user.uid)
             let userData = firestore.collection("users").document(user.uid)
-            userBooks.delete()
             userLibrary.delete()
             presentationDocument.delete()
             imageDocument.delete()
