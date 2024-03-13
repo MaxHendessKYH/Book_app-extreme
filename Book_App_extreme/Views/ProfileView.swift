@@ -85,7 +85,7 @@ struct ProfileView: View {
                             }
                         }
                         .onChange(of: avatar, initial: false) { oldValue, newValue in
-                            viewModel.avatarString = newValue
+                                viewModel.avatarString = newValue
                         }.onAppear {
                             viewModel.getUserAvatar()
                         }
@@ -178,7 +178,9 @@ struct ProfileView: View {
             Button(action: {
                 viewModel.overwriteName(nameString: name)
                 viewModel.overwritePresentationText(presentationText: presentationText)
-                viewModel.overwriteAvatarString(avatar: avatar)
+                if !avatar.isEmpty && avatar != "hand.tap" {
+                    viewModel.overwriteAvatarString(avatar: avatar)
+                }
                 showEdit = false // Forgot to change this state
                 isSaved = true
                 // Let info dissappear and set to false
