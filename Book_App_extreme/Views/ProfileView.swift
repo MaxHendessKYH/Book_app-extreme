@@ -84,7 +84,9 @@ struct ProfileView: View {
                             }
                         }
                         .onChange(of: avatar, initial: false) { oldValue, newValue in
-                            viewModel.avatarString = newValue
+                            if !newValue.isEmpty {
+                                viewModel.avatarString = newValue
+                            }
                         }.onAppear {
                             viewModel.getUserAvatar()
                         }
@@ -177,8 +179,10 @@ struct ProfileView: View {
             Button(action: {
                 viewModel.overwriteName(nameString: name)
                 viewModel.overwritePresentationText(presentationText: presentationText)
-                viewModel.overwriteAvatarString(avatar: avatar)
-                showEdit.toggle()
+                if !avatar.isEmpty {
+                    viewModel.overwriteAvatarString(avatar: avatar)
+                }
+                showEdit = false
             }) {
                 Text("Save")
                     .foregroundColor(.white)
