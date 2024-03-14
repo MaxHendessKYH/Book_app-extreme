@@ -1,13 +1,13 @@
-//  NewBookItemView.swift
+//
+//  BookItemView2.swift
 //  Book_App_extreme
 //
-//  Created by Mehdi on 2024-02-27.
+//  Created by Ali Alhasan on 2024-03-14.
 //
-// ToDO = Solve the issue with the revealing buttons 
 
 import SwiftUI
 
-struct BookItemView: View {
+struct BookItemView2: View {
     
     @ObservedObject var viewModel = BookListViewViewModel.shared
     @State var bookItem: BookItem
@@ -26,7 +26,6 @@ struct BookItemView: View {
                         .frame(height: 300)
                         .background(.ultraThinMaterial)
                     RemoteImageView(imageUrl: convertBookUrltoString())
-                        .frame(maxWidth: 250, maxHeight: 300)
                 }
                 Text(bookItem.volumeInfo.title)
                     .font(.title)
@@ -34,7 +33,7 @@ struct BookItemView: View {
                 Divider()
                 
                 if isRatingMode {
-                    RatingView(rating: $rating)
+                    RatingView2(rating: $rating)
                         .padding()
                     VStack {
                         // Input
@@ -75,32 +74,7 @@ struct BookItemView: View {
                     .cornerRadius(5)
                 }
                 
-                Button("Add to Bookshelf") {   
-                    isMenuVisible.toggle()
-                }
-                .frame(width: 500)
-                .overlay(
-                
-                    MenuView(isVisible: $isMenuVisible) {
-                        //ForEach(viewModel.bookshelfTitels as? [String] ?? ["not found", "Not Found"], id: \.self) { shelf in
-                            
-                        ForEach( viewModel.bookshelves!.indices, id: \.self) { index in
-                            
-                            if let shelfData = viewModel.bookshelves?[index],
-                               let titel = shelfData["titel"] as? String{
-                                
-                                Button(action: {
-                                    isMenuVisible.toggle()
-                                    viewModel.addBookToShelf(shelfTitel: titel , book: bookItem)
-                                }) {
-                                    Text(titel)
-                                }
-                                //.zIndex(1.0)
-                            }
-                        }
-                    }
-                    //alignment: .bottom
-                )
+               
                 Divider()
                 ScrollView {
                     Text(bookItem.volumeInfo.description ?? "")
@@ -122,7 +96,7 @@ struct BookItemView: View {
     }
 }
 
-struct RatingView: View {
+struct RatingView2: View {
     @Binding var rating: Int
 
     var body: some View {
@@ -138,8 +112,9 @@ struct RatingView: View {
     }
 }
 
-extension BookItemView {
-    init() {
+extension BookItemView2 {
+    init(){
+    
         let jsonString = """
         {
             \"title\": \"Harry Potter\",
@@ -155,38 +130,7 @@ extension BookItemView {
     }
 }
 
-#Preview {
-    BookItemView()
+/*#Preview {
+    BookItemView2()
 }
-
-struct MenuView<Content: View>: View {
-    @Binding var isVisible: Bool
-    var content: Content
-
-    init(isVisible: Binding<Bool>, @ViewBuilder content: () -> Content) {
-        self._isVisible = isVisible
-        self.content = content()
-    }
-
-    var body: some View {
-        if isVisible {
-            ZStack {
-                Rectangle()
-                    .fill(Color.clear)
-                    .onTapGesture {
-                        isVisible = false
-                    }
-                VStack {
-                    content
-                        .padding()
-                        .foregroundColor(.black)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
-                    Spacer()
-                }
-            }
-            .edgesIgnoringSafeArea(.all)
-        }
-    }
-}
+*/
