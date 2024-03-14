@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BookItemView: View {
+    
     @ObservedObject var viewModel = BookListViewViewModel.shared
     @State var bookItem: BookItem
     @State private var isRatingMode = false
@@ -16,6 +17,7 @@ struct BookItemView: View {
     @State var text: String = ""
     @StateObject var viewModelRatings : BookItemViewViewModel
     @State private var isMenuVisible = false
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -42,10 +44,8 @@ struct BookItemView: View {
                                     .stroke(Color.brown, lineWidth: 1)
                             )
                     }
-                
-                
                     Button("Done") {
-                        viewModelRatings.addReviewAndSave(review: text, star: rating)
+                        viewModelRatings.addReviewAndSave(review: reviewText, star: rating)
                         isRatingMode.toggle()
                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     }
@@ -56,15 +56,14 @@ struct BookItemView: View {
                 } else {
                     Button("Rate/Review") {
                         isRatingMode.toggle()
-                        viewModelRatings.fetchReviews { review in
-                            if let unwrappedReview = review {
-                                text = unwrappedReview.comment
-                                rating=unwrappedReview.star
+                        viewModelRatings.fetchReviews { reviews in
+                            if let reviews = reviews {
+                                for review in reviews {
+                                    print("Review ID: \(review.id), Star: \(review.star), Comment: \(review.comment)")
+                                }
                             } else {
-                                print("fail to fetch data")
+                                print("Failed to fetch reviews.")
                             }
-                        
-                            
                         }
                     }
                     .padding()
@@ -88,30 +87,22 @@ struct BookItemView: View {
                                let titel = shelfData["titel"] as? String{
                                 
                                 Button(action: {
-                                    
                                     isMenuVisible.toggle()
                                     viewModel.addBookToShelf(shelfTitel: titel , book: bookItem)
-                                    
-                                    
-                                    
                                 }) {
                                     Text(titel)
                                 }
-                                
                                 //.zIndex(1.0)
-                                
                             }
                         }
-                       }
-                
-                
-                
+                    }
                     //alignment: .bottom
-                
                 )
                 Divider()
-                Text(bookItem.volumeInfo.description ?? "")
-                    .padding()
+                ScrollView {
+                    Text(bookItem.volumeInfo.description ?? "")
+                        .padding()
+                }
                 Spacer()
             }
         }
@@ -166,6 +157,7 @@ struct BookItemView_Previews: PreviewProvider {
         BookItemView()
     }
 }
+
 struct MenuView<Content: View>: View {
     @Binding var isVisible: Bool
     var content: Content
