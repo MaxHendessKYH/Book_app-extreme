@@ -10,6 +10,7 @@ import SwiftUI
 
 struct RegisterView: View {
     
+    // Create an instance of RegisterViewViewModel
     @StateObject var viewModel = RegisterViewViewModel()
     
        
@@ -47,7 +48,7 @@ struct RegisterView: View {
                 .padding(.bottom)
                 
                 Form{
-                    
+                    // Form section for user input fields and registration
                     TextField("Full Name", text: $viewModel.name)
                         .textFieldStyle(DefaultTextFieldStyle())
                         .autocorrectionDisabled()
@@ -59,7 +60,7 @@ struct RegisterView: View {
                     TextField("Password (at least 8 character)", text: $viewModel.password)
                         .textFieldStyle(DefaultTextFieldStyle())
                     
-                    SecureField("Re-enter Password", text: $viewModel.repeatPassword)
+                    TextField("Re-enter Password", text: $viewModel.repeatPassword)
                         .textFieldStyle(DefaultTextFieldStyle())
                     
                     ZStack {
@@ -80,6 +81,7 @@ struct RegisterView: View {
                             })
                         
                         }
+                    // Display error message if any
                     if !viewModel.errorMessage.isEmpty {
                         Text(viewModel.errorMessage)
                             .foregroundColor(Color.red)
