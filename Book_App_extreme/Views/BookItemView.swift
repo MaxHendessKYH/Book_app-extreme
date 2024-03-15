@@ -46,7 +46,7 @@ struct BookItemView: View {
                             )
                     }
                     Button("Done") {
-                        viewModelRatings.addReviewAndSave(review: reviewText, star: rating)
+                        viewModelRatings.addReviewAndSave(review: text, star: rating)
                         isRatingMode.toggle()
                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     }
@@ -57,6 +57,7 @@ struct BookItemView: View {
                 } else {
                     Button("Rate/Review") {
                         isRatingMode.toggle()
+
                         viewModelRatings.fetchReviews { reviews in
                            if let reviews = reviews {
                                
@@ -66,7 +67,9 @@ struct BookItemView: View {
                                 }
                             } else {
                                 print("Failed to fetch reviews.")*/
+
                             }
+
                         }
                     }
                     .padding()
@@ -75,7 +78,7 @@ struct BookItemView: View {
                     .cornerRadius(5)
                 }
                 
-                Button("Add to Bookshelf") {   
+                Button("Add to Bookshelf") {
                     isMenuVisible.toggle()
                 }
                 .frame(width: 500)
@@ -109,6 +112,7 @@ struct BookItemView: View {
                 Spacer()
             }
         }
+        
     }
     
     func convertBookUrltoString() -> String {
