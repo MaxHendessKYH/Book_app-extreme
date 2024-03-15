@@ -10,17 +10,19 @@ import SwiftUI
 struct MainView: View {
     
     // ViewModel to manage the main screen logic
-    @StateObject var viewModel = MainViewViewModel()
+    @StateObject var viewModel = MainViewViewModel() 
     
     var body: some View {
-        // Check if user is signed in and has a valid user ID
-        if viewModel.isSignedIn, !viewModel.currentUserId.isEmpty {
-            // If signed in, show the account view
-            accountView
-        } else {
-            // If not signed in, show the login view
-            LoginView()
-        }
+        VStack{
+            // Check if user is signed in and has a valid user ID
+            if viewModel.isSignedIn, !viewModel.currentUserId.isEmpty {
+                // If signed in, show the account view
+                accountView
+            } else {
+                // If not signed in, show the login view
+                LoginView()
+            }
+        }.navigationBarBackButtonHidden(true)
     }
     // View for the account when user is signed in
     @ViewBuilder
