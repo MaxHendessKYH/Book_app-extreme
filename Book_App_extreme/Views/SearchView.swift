@@ -14,13 +14,13 @@ struct SearchView: View {
     
     var body: some View {
         VStack {
-            Text("Welcome to the Library")
+            //Text("Welcome to the Library")
             // Title test - Harry Potter and the Philosopher's Stone
             // ISBN test - 1781100217 eller 9781781100219
             // Authors test - J.K. Rowling
             SearchBarView(searchText: $librarian.searchText, currentIndex: $librarian.categoryIndex, onSearchClosure: {
                 apiBooks.removeAll()
-//                // Get books from api
+                // Get books from api
             
                 // Get books from api
                 librarian.getBooks{ books in
@@ -29,6 +29,7 @@ struct SearchView: View {
                     }
                 }
             })
+            
             List{
                 // show books from api
                 ForEach(apiBooks, id: \.id){book in
@@ -37,16 +38,15 @@ struct SearchView: View {
                     } label: {
                         Text(book.volumeInfo.title)
                     }
-                    
-                    Button("Add to Bookshelf"){
-                        //Add book to bookshelf todo: save in database
-                        myBookshelf.append(book)
-                        //print(myBookshelf)
-                    }
                 }
                 .padding()
             }
         }
+        .background {
+            Color(red: 0.1, green: 0.4, blue: 0.3).opacity(0.3)
+                .ignoresSafeArea()
+        }
+        .navigationTitle("Find your books")
     }
 }
 
