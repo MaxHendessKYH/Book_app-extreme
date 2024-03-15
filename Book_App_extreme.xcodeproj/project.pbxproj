@@ -10,6 +10,7 @@
 		3FDED8912B9B4DF60014F1BD /* AddBookShelfView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDED8902B9B4DF60014F1BD /* AddBookShelfView.swift */; };
 		3FDED8932B9CADE50014F1BD /* UserID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDED8922B9CADE50014F1BD /* UserID.swift */; };
 		3FDED8B32BA08B3C0014F1BD /* Review.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDED8B22BA08B3C0014F1BD /* Review.swift */; };
+		3FDED8B52BA3586E0014F1BD /* BookItemView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDED8B42BA3586E0014F1BD /* BookItemView2.swift */; };
 		652A0AFF2B9A409300F43AA3 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652A0AFA2B9A409300F43AA3 /* Book.swift */; };
 		652A0B002B9A409300F43AA3 /* ImageLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652A0AFB2B9A409300F43AA3 /* ImageLinks.swift */; };
 		652A0B012B9A409300F43AA3 /* VolumeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652A0AFC2B9A409300F43AA3 /* VolumeInfo.swift */; };
@@ -85,6 +86,7 @@
 		3FDED8902B9B4DF60014F1BD /* AddBookShelfView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddBookShelfView.swift; sourceTree = "<group>"; };
 		3FDED8922B9CADE50014F1BD /* UserID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserID.swift; sourceTree = "<group>"; };
 		3FDED8B22BA08B3C0014F1BD /* Review.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Review.swift; sourceTree = "<group>"; };
+		3FDED8B42BA3586E0014F1BD /* BookItemView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookItemView2.swift; sourceTree = "<group>"; };
 		652A0AFA2B9A409300F43AA3 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		652A0AFB2B9A409300F43AA3 /* ImageLinks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLinks.swift; sourceTree = "<group>"; };
 		652A0AFC2B9A409300F43AA3 /* VolumeInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolumeInfo.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 				652A0B172B9A40FA00F43AA3 /* RemoteImageView.swift */,
 				652A0B222B9A40FB00F43AA3 /* SearchBarView.swift */,
 				652A0B192B9A40FA00F43AA3 /* SearchView.swift */,
+				3FDED8B42BA3586E0014F1BD /* BookItemView2.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				652A0B122B9A40CA00F43AA3 /* LoginViewViewModel.swift in Sources */,
 				652A0B242B9A40FB00F43AA3 /* MainView.swift in Sources */,
 				652A0B312B9A40FB00F43AA3 /* ProfileView.swift in Sources */,
+				3FDED8B52BA3586E0014F1BD /* BookItemView2.swift in Sources */,
 				F19ED5AD2BA0656000F13106 /* Books.swift in Sources */,
 				F1EDC1CF2B96A2BB00FE0313 /* Extentions.swift in Sources */,
 				652A0B0E2B9A40CA00F43AA3 /* BookViewViewModel.swift in Sources */,

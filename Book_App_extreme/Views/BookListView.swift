@@ -17,56 +17,75 @@ struct BookListView: View {
     
     var body: some View {
         
-        ZStack{
-            
-            LinearGradient(colors: [Color.purple , Color.red], startPoint: .topLeading, endPoint: .bottom)
-                .ignoresSafeArea()
-            VStack{
-               
+        NavigationView{
+            ZStack{
                 
-                
-                List{
+                LinearGradient(colors: [Color.purple , Color.red], startPoint: .topLeading, endPoint: .bottom)
+                    .ignoresSafeArea()
+                VStack{
                     
                     
-                    if let shelfData = bookViewModel.bookshelves?[bookShelfIndex],
-                       let titel = shelfData["titel"] as? String,
-                       let books = shelfData["bookshelf"] as? [BookItem]
-                    {
+                    
+                    List{
                         
-                        ForEach(books,id: \.id){ book in
+                        
+                        if let shelfData = bookViewModel.bookshelves?[bookShelfIndex],
+                           let titel = shelfData["titel"] as? String,
+                           let books = shelfData["bookshelf"] as? [BookItem]
+                        {
                             
-                            HStack{
-                                let urlString = book.volumeInfo.imageLinks?.smallThumbnail.absoluteString
-                                
-                                RemoteImageView(imageUrl: urlString!)
-                                    .padding(.trailing, 20)
+                            ForEach(books,id: \.id){ book in
                                 
                                 
+                                NavigationLink(destination: {
+                                    
+                                    BookItemView2(bookItem: book, viewModelRatings: BookItemViewViewModel(bookItem: book))
+                                    
+                                    
+                                    
+                                }, label: {
                                 
-                                VStack{
-                                    Text(book.volumeInfo.title)
-                                        .padding(5)
-                                    Text(book.volumeInfo.authors?[0] ?? "No author found ")
-                                        .padding(5)
+                                
+                                
+                                
+                                
+                                
+                                
+                                HStack{
+                                    let urlString = book.volumeInfo.imageLinks?.smallThumbnail.absoluteString
+                                    
+                                    RemoteImageView(imageUrl: urlString!)
+                                        .padding(.trailing, 20)
+                                        .frame(maxWidth: 150)
+                                    
+                                    
+                                    
+                                    VStack{
+                                        Text(book.volumeInfo.title)
+                                            .padding(5)
+                                        Text(book.volumeInfo.authors?[0] ?? "No author found ")
+                                            .padding(5)
+                                    }
                                 }
-                            }
+                                })
+                                
+                            }.onDelete(perform: { indexSet in
+                                
+                                let bookIndex = indexSet.first
+                                bookViewModel.removeBookFromShelf(shelfTitel: titel, index: bookIndex ?? -1)
+                            })
                             
-                        }.onDelete(perform: { indexSet in
                             
-                            let bookIndex = indexSet.first
-                            bookViewModel.removeBookFromShelf(shelfTitel: titel, index: bookIndex ?? -1)
-                        })
-                        
-                        
-                        
-                    }
-                }.scrollContentBackground(.hidden)
-            }
-            
-            
+                            
+                        }
+                    }.scrollContentBackground(.hidden)
+                }
                 
-             
-            
+                
+                
+                
+                
+            }
         }
     }
    

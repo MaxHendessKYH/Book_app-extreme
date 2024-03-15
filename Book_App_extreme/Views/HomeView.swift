@@ -38,8 +38,8 @@ struct HomeView: View {
             .navigationTitle("My Bookshelf")
             .navigationBarItems(trailing: NavigationLink("Add", destination: AddBookShelfView(viewModel: viewModel))
             )
-        }
-    }
+        }.navigationBarBackButtonHidden(true)
+    } 
 }
 
 #Preview {
