@@ -51,7 +51,7 @@ struct AddBookShelfView: View {
                 Spacer()
 
             }.navigationDestination(isPresented: $isHomeViewPresented) {
-                HomeView()
+                MainView()
             }
         }.navigationBarBackButtonHidden(true)
 

@@ -17,6 +17,8 @@ struct BookItemView: View {
     @State var text: String = ""
     @StateObject var viewModelRatings : BookItemViewViewModel
     @State private var isMenuVisible = false
+    @State private var selectedOptionIndex = -1
+
     
     var body: some View {
         NavigationView {
@@ -76,31 +78,26 @@ struct BookItemView: View {
                 }
                 
                 Button("Add to Bookshelf") {   
-                    isMenuVisible.toggle()
+                    isMenuVisible = true
+                    
                 }
+                
                 .frame(width: 500)
                 .overlay(
                 
-                    MenuView(isVisible: $isMenuVisible) {
-                        //ForEach(viewModel.bookshelfTitels as? [String] ?? ["not found", "Not Found"], id: \.self) { shelf in
-                            
-                        ForEach( viewModel.bookshelves!.indices, id: \.self) { index in
-                            
-                            if let shelfData = viewModel.bookshelves?[index],
-                               let titel = shelfData["titel"] as? String{
-                                
-                                Button(action: {
-                                    isMenuVisible.toggle()
-                                    viewModel.addBookToShelf(shelfTitel: titel , book: bookItem)
-                                }) {
-                                    Text(titel)
-                                }
-                                //.zIndex(1.0)
-                            }
-                        }
-                    }
-                    //alignment: .bottom
+                    MenuView(isVisible: $isMenuVisible, options: viewModel.bookshelves ?? [], selectedOptionIndex: $selectedOptionIndex) {
+                           
+                       }
                 )
+                .onChange(of: selectedOptionIndex, initial: false){ oldIndex, newIndex in
+                    let title = viewModel.bookshelves?[newIndex]["titel"] as? String
+                    viewModel.addBookToShelf(shelfTitel: title ?? "", book: bookItem)
+                    isMenuVisible = false
+                }
+                
+                
+                
+                
                 Divider()
                 ScrollView {
                     Text(bookItem.volumeInfo.description ?? "")
@@ -161,10 +158,15 @@ extension BookItemView {
 
 struct MenuView<Content: View>: View {
     @Binding var isVisible: Bool
+    var options: [[String: Any]]
+    @Binding var selectedOptionIndex: Int
+    
     var content: Content
 
-    init(isVisible: Binding<Bool>, @ViewBuilder content: () -> Content) {
+    init(isVisible: Binding<Bool>, options: [[String: Any]], selectedOptionIndex: Binding<Int>, @ViewBuilder content: () -> Content) {
         self._isVisible = isVisible
+        self.options = options
+        self._selectedOptionIndex = selectedOptionIndex
         self.content = content()
     }
 
@@ -177,12 +179,22 @@ struct MenuView<Content: View>: View {
                         isVisible = false
                     }
                 VStack {
+                    Picker(selection: $selectedOptionIndex, label: Text("")) {
+                        ForEach(0..<options.count, id: \.self) { index in
+                            Text(options[index]["titel"] as? String ?? "").tag(index)
+                           // Text("hello Worldnnn").tag(index)
+                        }
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .shadow(radius: 5)
+                    
                     content
                         .padding()
                         .foregroundColor(.black)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
+                    
                     Spacer()
                 }
             }
@@ -190,3 +202,5 @@ struct MenuView<Content: View>: View {
         }
     }
 }
+
+
