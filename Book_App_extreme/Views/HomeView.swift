@@ -13,84 +13,33 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView{
-           
-            
             VStack{
-                NavigationLink{
-                    
-                    AddBookShelfView(viewModel: viewModel) 
-                    
-                }label :{
-                    
-                    Image(systemName: "plus")
-                }
-                
-                
-                List{
-                    
-                    
-                    ForEach(viewModel.bookshelves!.indices, id: \.self){    index in
-                        
-                        
-                        if let shelfData = viewModel.bookshelves?[index],
-                           let titel = shelfData["titel"] as? String
-                           //let books = shelfData["bookshelf"] as? [BookItem]
-                           {
-                            
-                           
-                            
-                            NavigationLink{
-                                
-                                
-                                
-                                BookListView(bookShelfIndex: index)
-
-                                
-                            }label :{
-                                
-                                
-                                HStack{
-                                    Image(systemName: "books.vertical") 
-                                    Text(titel) 
-                                    
+                    List{
+                        ForEach(viewModel.bookshelves!.indices, id: \.self){index in
+                            if let shelfData = viewModel.bookshelves?[index],
+                               let titel = shelfData["titel"] as? String
+                               //let books = shelfData["bookshelf"] as? [BookItem]
+                               {
+                                NavigationLink{
+                                    BookListView(bookShelfIndex: index)
+                                }label :{
+                                    HStack{
+                                        Image(systemName: "books.vertical")
+                                        Text(titel)
+                                    }
                                 }
                             }
-                            
-                            
-                           
-                            
-                            
-                        }
-                        
-                        
-                    }.onDelete(perform: { indexSet in
-                        let shelfIndex = indexSet.first
-                        
-                        viewModel.removeList(shelfIndex: shelfIndex ??  -1) 
-                    })
-                    
-                    
-                }
-                
-                
-                
-                
-                
-                
-                
-                Text("Hello it is me")
-                    .onTapGesture {
-                        for shelf in viewModel.bookshelves!{
-                            
-                            let books = shelf["bookshelf"] as? [BookItem]
-                            let count = books!.count
-                            print(count)
-                        }
+                        }.onDelete(perform: { indexSet in
+                            let shelfIndex = indexSet.first
+                            viewModel.removeList(shelfIndex: shelfIndex ??  -1)
+                        })
                     }
             }
+            .navigationTitle("My Bookshelf")
+            .navigationBarItems(trailing: NavigationLink("Add", destination: AddBookShelfView(viewModel: viewModel))
+            )
         }
     }
-    
 }
 
 #Preview {

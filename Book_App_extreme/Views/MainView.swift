@@ -22,25 +22,27 @@ struct MainView: View {
             LoginView()
         }
     }
-    
     // View for the account when user is signed in
     @ViewBuilder
     var accountView: some View {
-        // TabView for the home, search, and profile views
-        TabView {
-            HomeView()
-                .tabItem {
-                    Label("Home", systemImage: "house")
-                }
-            SearchView()
-                .tabItem {
-                    Label("Search", systemImage: "magnifyingglass")
-                }
-            ProfileView()
-                .tabItem {
-                    Label("Profile", systemImage: "person.circle")
-                }
+        NavigationStack {
+            TabView {
+                HomeView()
+                    .tabItem {
+                        Label("Home", systemImage: "house")
+                    }
+                SearchView()
+                    .tabItem {
+                        Label("Search", systemImage: "magnifyingglass")
+                    }
+                ProfileView()
+                    .tabItem {
+                        Label("Profile", systemImage: "person.circle")
+                    }
+            }
         }
+        // TabView for the home, search, and profile views
+        .toolbar(.visible, for: .tabBar)
     }
 }
 
