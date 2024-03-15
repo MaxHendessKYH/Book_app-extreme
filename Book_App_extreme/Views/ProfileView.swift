@@ -6,11 +6,12 @@ struct ProfileView: View {
     @State var mail: String = "NoMail"
     @State var date: String = "NoDate"
     @State var presentationText: String = ""
-    @State var avatar: String = ""
+    @State var avatar: String = "hand.tap"
     @ObservedObject var viewModel = ProfileViewViewModel()
     
     @State var showEdit = false
     @State private var showWarning = false
+    @State private var isSaved = false
     
     var body: some View {
         ScrollView {
@@ -84,9 +85,9 @@ struct ProfileView: View {
                             }
                         }
                         .onChange(of: avatar, initial: false) { oldValue, newValue in
-                            if !newValue.isEmpty {
+
                                 viewModel.avatarString = newValue
-                            }
+
                         }.onAppear {
                             viewModel.getUserAvatar()
                         }
@@ -179,10 +180,17 @@ struct ProfileView: View {
             Button(action: {
                 viewModel.overwriteName(nameString: name)
                 viewModel.overwritePresentationText(presentationText: presentationText)
-                if !avatar.isEmpty {
+
+                if !avatar.isEmpty && avatar != "hand.tap" {
                     viewModel.overwriteAvatarString(avatar: avatar)
                 }
-                showEdit = false
+                showEdit = false // Forgot to change this state
+                isSaved = true
+                // Let info dissappear and set to false
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    isSaved = false
+                }
+
             }) {
                 Text("Save")
                     .foregroundColor(.white)
@@ -222,6 +230,12 @@ struct ProfileView: View {
                                 secondaryButton: .cancel()
                             )
                         }
+                }
+            }
+            // Added Saved-view to VStack
+            VStack {
+                if isSaved {
+                    MessageInfoView(systemImageText: "externaldrive.badge.plus", color: Color.green, message: "Saved")
                 }
             }
         }

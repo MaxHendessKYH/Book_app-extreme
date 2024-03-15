@@ -188,22 +188,23 @@ class ProfileViewViewModel: ObservableObject {
         }
     }
     
-    /// Deleting the current users stored documents for profile.
+    /// Deleting the current users stored documents.
     func deleteDocumentsForUser() {
         if let user = Auth.auth().currentUser {
-            let userId = user.uid
             let firestore = Firestore.firestore()
-            let presentationDocument = firestore.collection("userPresentation").document(userId)
-            let imageDocument = firestore.collection("userAvatar").document(userId)
-            let userData = firestore.collection("users").document(userId)
+            let userLibrary = firestore.collection("library").document(user.uid)
+            let presentationDocument = firestore.collection("userPresentation").document(user.uid)
+            let imageDocument = firestore.collection("userAvatar").document(user.uid)
+            let userData = firestore.collection("users").document(user.uid)
+            userLibrary.delete()
             presentationDocument.delete()
             imageDocument.delete()
             userData.delete()
             { error in
                 if let error = error {
-                    print("Error deleting document: \(error.localizedDescription)")
+                    print("Error deleting documents: \(error.localizedDescription)")
                 } else {
-                    print("Document deleted.")
+                    print("Documents deleted.")
                 }
             }
         }
