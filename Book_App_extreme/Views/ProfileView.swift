@@ -85,7 +85,9 @@ struct ProfileView: View {
                             }
                         }
                         .onChange(of: avatar, initial: false) { oldValue, newValue in
+
                                 viewModel.avatarString = newValue
+
                         }.onAppear {
                             viewModel.getUserAvatar()
                         }
@@ -178,6 +180,7 @@ struct ProfileView: View {
             Button(action: {
                 viewModel.overwriteName(nameString: name)
                 viewModel.overwritePresentationText(presentationText: presentationText)
+
                 if !avatar.isEmpty && avatar != "hand.tap" {
                     viewModel.overwriteAvatarString(avatar: avatar)
                 }
@@ -187,6 +190,7 @@ struct ProfileView: View {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     isSaved = false
                 }
+
             }) {
                 Text("Save")
                     .foregroundColor(.white)
