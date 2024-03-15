@@ -45,7 +45,7 @@ struct BookItemView: View {
                             )
                     }
                     Button("Done") {
-                        viewModelRatings.addReviewAndSave(review: reviewText, star: rating)
+                        viewModelRatings.addReviewAndSave(review: text, star: rating)
                         isRatingMode.toggle()
                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     }
@@ -56,14 +56,14 @@ struct BookItemView: View {
                 } else {
                     Button("Rate/Review") {
                         isRatingMode.toggle()
-                        viewModelRatings.fetchReviews { reviews in
-                            if let reviews = reviews {
-                                for review in reviews {
-                                    print("Review ID: \(review.id), Star: \(review.star), Comment: \(review.comment)")
-                                }
+                        viewModelRatings.fetchReviews { review in
+                            if let unwrappedReview = review {
+                                text = unwrappedReview.comment
+                                rating=unwrappedReview.star
                             } else {
-                                print("Failed to fetch reviews.")
+                                print("fail to fetch data")
                             }
+
                         }
                     }
                     .padding()

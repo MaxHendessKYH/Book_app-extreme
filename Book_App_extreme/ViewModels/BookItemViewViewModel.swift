@@ -23,22 +23,22 @@ class BookItemViewViewModel: ObservableObject {
         }
     }
     
-    func fetchReviews(completion: @escaping ([Review]?) -> Void) {
+    func fetchReviews(completion: @escaping (Review?) -> Void) {
+        print("fetching reviews")
            let db = Firestore.firestore()
-           let reviewsCollection = db.collection("reviews")
-
-           // Query reviews based on book item ID
-           reviewsCollection.whereField("bookItemId", isEqualTo: bookItem.id).getDocuments { (querySnapshot, error) in
+           let reviewsCollection = db.collection("books")
+           reviewsCollection.whereField("id", isEqualTo: bookItem.id).getDocuments { (querySnapshot, error) in
+               print("done fetch reviews")
                if let error = error {
                    print("Error fetching reviews: \(error.localizedDescription)")
                    completion(nil)
                } else {
-                   // Parse the documents into Review objects
-                   let reviews = querySnapshot?.documents.compactMap { document in
-                       try? document.data(as: Review.self)
+                   let book = querySnapshot?.documents.compactMap { document in
+                       try? document.data(as: BookItem.self)
                    }
 
-                   completion(reviews)
+                   print("done fetch reviews: \((book?.first)?.reviews)")
+                   completion((book?.first)?.reviews)
                }
            }
        }
